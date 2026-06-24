@@ -1,0 +1,6 @@
+{
+  "name": "LaundryHub",
+  "description": "LaundryHub is an on-demand, Uber-style laundry platform connecting customers, drivers, laundry partners, and admins.",
+  "requestFramePermissions": ["geolocation"],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
