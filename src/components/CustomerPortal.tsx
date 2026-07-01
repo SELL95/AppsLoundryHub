@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
+import { motion } from "motion/react";
 import { 
   MapPin, 
   ShoppingBag, 
@@ -490,43 +491,102 @@ export default function CustomerPortal({
   };
 
   return (
-    <div id="customer-portal-view" className="w-full max-w-7xl mx-auto px-4 py-6">
+    <div id="customer-portal-view" className="w-full max-w-7xl mx-auto px-4 py-6 text-slate-800">
       
+      {/* ALGORITMA LANGKAH PEMESANAN CLEANUP */}
+      <div className="bg-white border border-slate-200 rounded-2xl p-5 mb-6 shadow-sm">
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-3 mb-4">
+          <div>
+            <h2 className="text-sm font-extrabold text-slate-900 tracking-tight flex items-center gap-2">
+              <span className="bg-yellow-400 text-slate-900 px-2 py-0.5 rounded text-[10px] font-black uppercase font-mono shadow-sm">
+                ALGORITMA SISTEM
+              </span>
+              Alur Pintar Pemesanan Laundry CleanUp
+            </h2>
+            <p className="text-xs text-slate-500 mt-0.5">Ikuti 5 langkah sederhana di bawah ini untuk pemesanan cepat secara real-time.</p>
+          </div>
+          <div className="flex items-center gap-2">
+            <span className="text-[10px] font-mono tracking-wider bg-blue-50 text-blue-700 font-bold border border-blue-200 px-2.5 py-1 rounded-full uppercase">
+              ⚡ DUKUNGAN GPS AKTIF
+            </span>
+          </div>
+        </div>
+
+        <div className="grid grid-cols-1 sm:grid-cols-5 gap-3">
+          {[
+            { step: "1", title: "Atur Pin GPS", desc: "Geser pin hijau di peta ke titik penjemputan Anda.", icon: "📍" },
+            { step: "2", title: "Pilih Mitra", desc: "Klik mitra terdekat di daftar atau ikon peta ungu.", icon: "🧺" },
+            { step: "3", title: "Pilih Layanan", desc: "Tentukan jenis Kiloan / Satrika & berat pakaian.", icon: "🧼" },
+            { step: "4", title: "Konfirmasi Alamat", desc: "Masukkan alamat lengkap penjemputan laundry.", icon: "🏠" },
+            { step: "5", title: "Pantau Kurir", desc: "Buat pesanan & tonton pergerakan kurir secara live!", icon: "🚚" },
+          ].map((item, idx) => (
+            <div 
+              key={idx} 
+              onClick={() => {
+                if (item.step === "1" || item.step === "2") {
+                  setActiveTab("home");
+                } else if (item.step === "3" || item.step === "4") {
+                  setActiveTab("order");
+                } else if (item.step === "5") {
+                  setActiveTab("home");
+                }
+              }}
+              className="group cursor-pointer p-3 rounded-xl border border-slate-200 hover:border-blue-400 bg-slate-50 hover:bg-blue-50/50 transition duration-200 text-left relative overflow-hidden shadow-sm"
+            >
+              <div className="absolute top-0 right-0 w-8 h-8 bg-blue-500/5 group-hover:bg-blue-500/10 rounded-bl-full flex items-center justify-center font-bold text-xs text-blue-600 transition">
+                #{item.step}
+              </div>
+              <div className="flex items-center gap-2 mb-1.5">
+                <span className="text-lg">{item.icon}</span>
+                <span className="font-bold text-xs text-slate-800 group-hover:text-blue-600 transition">{item.title}</span>
+              </div>
+              <p className="text-[10px] text-slate-500 leading-relaxed group-hover:text-slate-600">{item.desc}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+
       {/* Upper Navigation Tabs */}
-      <div className="flex border-b border-zinc-800 gap-2 mb-6 overflow-x-auto">
-        <button
+      <div className="flex border-b border-slate-200 gap-2 mb-6 overflow-x-auto">
+        <motion.button
+          whileHover={{ y: -1, textShadow: "0px 0px 1px rgba(37,99,235,0.2)" }}
+          whileTap={{ scale: 0.98 }}
           onClick={() => setActiveTab("home")}
-          className={`px-4 py-3 text-xs font-semibold tracking-wider uppercase border-b-2 transition shrink-0 cursor-pointer ${
+          className={`px-4 py-3 text-xs font-bold tracking-wider uppercase border-b-2 transition shrink-0 cursor-pointer ${
             activeTab === "home" 
-              ? "border-sky-500 text-sky-400" 
-              : "border-transparent text-zinc-400 hover:text-white"
+              ? "border-blue-600 text-blue-600 font-extrabold" 
+              : "border-transparent text-slate-500 hover:text-slate-800"
           }`}
         >
           🔍 Eksplorasi Mitra & Pelacakan GPS
-        </button>
-        <button
+        </motion.button>
+        <motion.button
+          whileHover={{ y: -1, textShadow: "0px 0px 1px rgba(37,99,235,0.2)" }}
+          whileTap={{ scale: 0.98 }}
           onClick={() => {
             setSelectedPartner(partners[0]);
             setActiveTab("order");
           }}
-          className={`px-4 py-3 text-xs font-semibold tracking-wider uppercase border-b-2 transition shrink-0 cursor-pointer ${
+          className={`px-4 py-3 text-xs font-bold tracking-wider uppercase border-b-2 transition shrink-0 cursor-pointer ${
             activeTab === "order" 
-              ? "border-sky-500 text-sky-400" 
-              : "border-transparent text-zinc-400 hover:text-white"
+              ? "border-blue-600 text-blue-600 font-extrabold" 
+              : "border-transparent text-slate-500 hover:text-slate-800"
           }`}
         >
           🧺 Pesan Antar-Jemput (Pickup)
-        </button>
-        <button
+        </motion.button>
+        <motion.button
+          whileHover={{ y: -1, textShadow: "0px 0px 1px rgba(37,99,235,0.2)" }}
+          whileTap={{ scale: 0.98 }}
           onClick={() => setActiveTab("history")}
-          className={`px-4 py-3 text-xs font-semibold tracking-wider uppercase border-b-2 transition shrink-0 cursor-pointer ${
+          className={`px-4 py-3 text-xs font-bold tracking-wider uppercase border-b-2 transition shrink-0 cursor-pointer ${
             activeTab === "history" 
-              ? "border-sky-500 text-sky-400" 
-              : "border-transparent text-zinc-400 hover:text-white"
+              ? "border-blue-600 text-blue-600 font-extrabold" 
+              : "border-transparent text-slate-500 hover:text-slate-800"
           }`}
         >
           📄 Riwayat Transaksi & Dompet ({orders.filter(o => o.customerId === "cust-1").length})
-        </button>
+        </motion.button>
       </div>
 
       {/* --- TAB 1: HOME & TRACKING --- */}
@@ -679,45 +739,51 @@ export default function CustomerPortal({
                     )}
 
                     {trackingOrder.status === "completed" && (
-                      <div className="w-full flex gap-2 mt-3">
-                        <button
+                      <div className="w-full flex gap-2.5 mt-3.5">
+                        <motion.button
+                          whileHover={{ scale: 1.03, y: -1 }}
+                          whileTap={{ scale: 0.97 }}
                           onClick={() => {
                             setReviewedOrderId(trackingOrder.id);
                             setDisputedOrderId(null);
                           }}
-                          className="flex-1 px-3 py-2 bg-zinc-800 hover:bg-zinc-700 text-zinc-200 border border-zinc-700 rounded-xl text-xs font-bold text-center"
+                          className="flex-1 px-3.5 py-2.5 bg-slate-900 hover:bg-slate-950 text-white border border-slate-800 rounded-xl text-xs font-bold text-center flex items-center justify-center gap-1.5 shadow-md shadow-slate-950/10 hover:shadow-lg transition-all duration-150 cursor-pointer"
                         >
-                          ★ Review Experience
-                        </button>
-                        <button
+                          <Star className="w-3.5 h-3.5 text-yellow-400 fill-yellow-400 animate-pulse" />
+                          <span>Beri Rating & Ulasan</span>
+                        </motion.button>
+                        <motion.button
+                          whileHover={{ scale: 1.03, y: -1 }}
+                          whileTap={{ scale: 0.97 }}
                           onClick={() => {
                             setDisputedOrderId(trackingOrder.id);
                             setReviewedOrderId(null);
                           }}
-                          className="flex-1 px-3 py-2 bg-zinc-800 hover:bg-zinc-700 text-rose-400 border border-zinc-700 rounded-xl text-xs font-bold text-center"
+                          className="flex-1 px-3.5 py-2.5 bg-red-950/20 hover:bg-red-950/30 text-rose-400 border border-rose-900/20 rounded-xl text-xs font-bold text-center flex items-center justify-center gap-1.5 transition-all duration-150 cursor-pointer"
                         >
-                          ⚠ Raise Dispute
-                        </button>
+                          <AlertTriangle className="w-3.5 h-3.5 text-rose-500" />
+                          <span>Ajukan Komplain</span>
+                        </motion.button>
                       </div>
                     )}
                   </div>
                 </div>
               </div>
             ) : (
-              <div className="bg-zinc-900/50 border border-zinc-800/80 rounded-2xl p-8 text-center text-zinc-400 flex flex-col items-center justify-center h-full min-h-[350px]">
-                <ShoppingBag className="w-12 h-12 text-zinc-600 mb-3" />
-                <h4 className="font-sans font-bold text-sm text-zinc-300">No Active Orders Tracking</h4>
-                <p className="text-xs text-zinc-500 max-w-sm mt-1.5 leading-relaxed">
-                  Book a new pickup service on the next tab to experience real-time courier matching and visual GPS map simulations.
+              <div className="bg-white border border-slate-200 rounded-2xl p-8 text-center text-slate-500 flex flex-col items-center justify-center h-full min-h-[350px] shadow-sm">
+                <ShoppingBag className="w-12 h-12 text-slate-300 mb-3" />
+                <h4 className="font-sans font-extrabold text-sm text-slate-800">Tidak Ada Pesanan yang Sedang Aktif</h4>
+                <p className="text-xs text-slate-400 max-w-sm mt-1.5 leading-relaxed">
+                  Pesan penjemputan baru pada tab di atas untuk menguji simulasi pemantauan GPS kurir real-time dan update status laundry.
                 </p>
                 <button
                   onClick={() => {
                     setSelectedPartner(partners[0]);
                     setActiveTab("order");
                   }}
-                  className="mt-4 px-4 py-2 bg-sky-600 hover:bg-sky-500 text-white font-semibold text-xs rounded-xl transition shadow-lg shadow-sky-600/10"
+                  className="mt-4 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs rounded-xl transition shadow-md shadow-blue-500/10 cursor-pointer"
                 >
-                  Book New Service
+                  Buat Pesanan Baru
                 </button>
               </div>
             )}
@@ -726,40 +792,40 @@ export default function CustomerPortal({
           {/* Right panel: Partners Directory & Wallet Summary */}
           <div className="lg:col-span-5 flex flex-col gap-6">
             {/* Dompet Laundry & Top-up Interaktif */}
-            <div className="bg-zinc-900/90 border border-zinc-800 rounded-2xl p-5 shadow-lg relative overflow-hidden bg-gradient-to-br from-zinc-900 to-zinc-950">
+            <div className="bg-white border border-slate-200 rounded-2xl p-5 shadow-sm relative overflow-hidden">
               <div className="flex items-center justify-between mb-4">
                 <div>
-                  <p className="text-xs text-zinc-400 font-medium">Saldo Dompet Laundry Anda</p>
-                  <p className="text-2xl font-extrabold font-mono text-white mt-1">
+                  <p className="text-xs text-slate-500 font-bold">Saldo Dompet CleanUp Anda</p>
+                  <p className="text-2xl font-extrabold font-mono text-slate-900 mt-1">
                     Rp {(currentWalletBalance * 15000).toLocaleString("id-ID")}
                   </p>
-                  <p className="text-[10px] text-zinc-500 font-mono">Setara dengan: ${currentWalletBalance.toFixed(2)} USD</p>
+                  <p className="text-[10px] text-slate-400 font-mono">Setara dengan: ${currentWalletBalance.toFixed(2)} USD</p>
                 </div>
-                <div className="bg-emerald-500/10 border border-emerald-500/20 w-12 h-12 rounded-xl flex items-center justify-center">
-                  <DollarSign className="w-6 h-6 text-emerald-400" />
+                <div className="bg-blue-50 border border-blue-100 w-12 h-12 rounded-xl flex items-center justify-center shadow-sm">
+                  <DollarSign className="w-6 h-6 text-blue-600" />
                 </div>
               </div>
 
               {/* Collapsible Interactive Top-Up Form */}
               {!isTopUpOpen ? (
-                <div className="flex gap-2 text-[11px] text-zinc-500 items-center justify-between border-t border-zinc-800/60 pt-3">
-                  <span className="flex items-center gap-1 text-[10px] text-zinc-400">
-                    <CheckCircle className="w-3.5 h-3.5 text-emerald-500" /> Pembayaran Escrow Kurir Aman
+                <div className="flex gap-2 text-[11px] text-slate-500 items-center justify-between border-t border-slate-100 pt-3">
+                  <span className="flex items-center gap-1 text-[10px] text-slate-400">
+                    <CheckCircle className="w-3.5 h-3.5 text-blue-600" /> Pembayaran Escrow Kurir Aman
                   </span>
                   <button
                     onClick={() => setIsTopUpOpen(true)}
-                    className="text-xs font-bold text-sky-400 hover:text-sky-300 flex items-center gap-1 cursor-pointer bg-sky-950/20 border border-sky-900/40 px-2.5 py-1 rounded-lg transition"
+                    className="text-xs font-bold text-blue-600 hover:text-blue-700 flex items-center gap-1 cursor-pointer bg-blue-50 border border-blue-200 px-3 py-1.5 rounded-lg transition"
                   >
                     + Isi Saldo (Top-Up)
                   </button>
                 </div>
               ) : (
-                <div className="border-t border-zinc-800/80 pt-3.5 mt-2.5 space-y-3 animate-fade-in">
+                <div className="border-t border-slate-100 pt-3.5 mt-2.5 space-y-3 animate-fade-in">
                   <div className="flex items-center justify-between">
-                    <span className="text-xs font-bold text-zinc-200">Simulasi Pengisian Saldo</span>
+                    <span className="text-xs font-extrabold text-slate-800">Simulasi Pengisian Saldo</span>
                     <button 
                       onClick={() => setIsTopUpOpen(false)}
-                      className="text-[11px] text-zinc-500 hover:text-zinc-350"
+                      className="text-[11px] text-slate-400 hover:text-slate-600 font-bold"
                     >
                       Batal
                     </button>
@@ -767,17 +833,17 @@ export default function CustomerPortal({
 
                   {/* Preset Buttons */}
                   <div>
-                    <span className="text-[9px] font-mono text-zinc-400 block mb-1.5 uppercase">Pilih Jumlah Nominal:</span>
+                    <span className="text-[9px] font-mono text-slate-500 block mb-1.5 uppercase font-bold">Pilih Jumlah Nominal:</span>
                     <div className="grid grid-cols-3 gap-1.5 font-mono">
                       {[50000, 100000, 250000].map((val) => (
                         <button
                           key={val}
                           type="button"
                           onClick={() => setTopUpRupiah(val)}
-                          className={`py-1.5 rounded-lg text-xs transition cursor-pointer ${
+                          className={`py-1.5 rounded-lg text-xs transition cursor-pointer font-bold ${
                             topUpRupiah === val
-                              ? "bg-sky-500 text-white font-bold"
-                              : "bg-zinc-950 text-zinc-400 border border-zinc-850 hover:text-white"
+                              ? "bg-blue-600 text-white font-bold shadow-sm"
+                              : "bg-white text-slate-600 border border-slate-200 hover:bg-slate-50"
                           }`}
                         >
                           Rp {(val/1000).toFixed(0)}k
@@ -788,7 +854,7 @@ export default function CustomerPortal({
 
                   {/* Provider Grid */}
                   <div>
-                    <span className="text-[9px] font-mono text-zinc-400 block mb-1.5 uppercase">Metode Pembayaran:</span>
+                    <span className="text-[9px] font-mono text-slate-500 block mb-1.5 uppercase font-bold">Metode Pembayaran:</span>
                     <div className="grid grid-cols-4 gap-1.5">
                       {["BCA", "GoPay", "OVO", "Mandiri"].map((prov) => (
                         <button
@@ -797,8 +863,8 @@ export default function CustomerPortal({
                           onClick={() => setTopUpProvider(prov)}
                           className={`py-1.5 rounded-lg text-[10px] font-bold transition cursor-pointer ${
                             topUpProvider === prov
-                              ? "bg-emerald-500 text-white"
-                              : "bg-zinc-950 text-zinc-400 border border-zinc-850 hover:text-white"
+                              ? "bg-blue-600 text-white font-bold shadow-sm"
+                              : "bg-white text-slate-600 border border-slate-200 hover:bg-slate-50"
                           }`}
                         >
                           {prov}
@@ -809,19 +875,19 @@ export default function CustomerPortal({
 
                   {/* Custom Input */}
                   <div className="flex items-center gap-2">
-                    <span className="text-xs font-mono text-zinc-500">Rp</span>
+                    <span className="text-xs font-mono text-slate-400 font-bold">Rp</span>
                     <input 
                       type="number" 
                       value={topUpRupiah} 
                       onChange={(e) => setTopUpRupiah(Math.max(0, parseInt(e.target.value) || 0))} 
-                      className="flex-1 bg-zinc-950 border border-zinc-850 p-1.5 text-xs text-white rounded font-mono"
+                      className="flex-1 bg-slate-50 border border-slate-200 p-1.5 text-xs text-slate-800 rounded font-mono font-bold focus:outline-none focus:ring-1 focus:ring-blue-500"
                     />
                   </div>
 
                   <button
                     onClick={handleTopUp}
                     disabled={isSubmittingTopUp || topUpRupiah <= 0}
-                    className="w-full py-2 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-bold text-xs rounded-xl shadow-lg transition duration-150 disabled:opacity-40 cursor-pointer flex items-center justify-center gap-1"
+                    className="w-full py-2 bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs rounded-xl shadow-sm transition disabled:opacity-40 cursor-pointer flex items-center justify-center gap-1"
                   >
                     {isSubmittingTopUp ? "Sedang Memproses..." : "Konfirmasi Top-Up Sekarang"}
                   </button>
@@ -830,13 +896,13 @@ export default function CustomerPortal({
             </div>
 
             {/* Kalkulator Simulasi Tarif & Pewangi Interaktif */}
-            <div className="bg-zinc-900/90 border border-zinc-800 rounded-2xl p-5 shadow-lg flex flex-col space-y-4 bg-gradient-to-br from-zinc-900 to-zinc-950">
+            <div className="bg-white border border-slate-200 rounded-2xl p-5 shadow-sm flex flex-col space-y-4">
               <div>
-                <h3 className="font-sans font-bold text-sm text-zinc-100 flex items-center gap-2">
-                  <Sparkles className="w-4 h-4 text-amber-400" />
+                <h3 className="font-sans font-extrabold text-sm text-slate-950 flex items-center gap-2">
+                  <Sparkles className="w-4 h-4 text-amber-500" />
                   Kalkulator Simulasi Tarif & Pewangi
                 </h3>
-                <p className="text-[11px] text-zinc-400 mt-1 leading-relaxed">
+                <p className="text-[11px] text-slate-500 mt-1 leading-relaxed">
                   Gunakan simulasi interaktif ini untuk memprediksi biaya, memilih aroma pewangi khas, serta menentukan durasi pengerjaan.
                 </p>
               </div>
@@ -844,8 +910,8 @@ export default function CustomerPortal({
               {/* Slider for weight */}
               <div className="space-y-1">
                 <div className="flex justify-between text-[11px]">
-                  <span className="text-zinc-400">Estimasi Berat Pakaian:</span>
-                  <span className="text-sky-400 font-bold font-mono">{calcWeight} kg</span>
+                  <span className="text-slate-500 font-bold">Estimasi Berat Pakaian:</span>
+                  <span className="text-blue-600 font-extrabold font-mono">{calcWeight} kg</span>
                 </div>
                 <input 
                   type="range" 
@@ -854,18 +920,18 @@ export default function CustomerPortal({
                   step="0.5" 
                   value={calcWeight}
                   onChange={(e) => setCalcWeight(parseFloat(e.target.value))}
-                  className="w-full accent-sky-500 h-1 bg-zinc-950 rounded-lg appearance-none cursor-pointer"
+                  className="w-full accent-blue-600 h-1 bg-slate-100 rounded-lg appearance-none cursor-pointer"
                 />
               </div>
 
               {/* Category selector */}
               <div className="grid grid-cols-2 gap-2 text-[11px]">
                 <div>
-                  <span className="text-zinc-500 block mb-1">Pilih Jenis Layanan:</span>
+                  <span className="text-slate-500 block mb-1 font-bold">Pilih Jenis Layanan:</span>
                   <select
                     value={calcCategory}
                     onChange={(e) => setCalcCategory(e.target.value)}
-                    className="w-full bg-zinc-950 border border-zinc-850 p-1.5 text-zinc-300 rounded focus:outline-none focus:ring-1 focus:ring-sky-500 text-xs"
+                    className="w-full bg-slate-50 border border-slate-200 p-1.5 text-slate-700 rounded focus:outline-none focus:ring-1 focus:ring-blue-500 text-xs font-semibold"
                   >
                     <option value="wash-fold">Cuci Lipat (Kiloan)</option>
                     <option value="wash-iron">Cuci Setrika</option>
@@ -873,11 +939,11 @@ export default function CustomerPortal({
                   </select>
                 </div>
                 <div>
-                  <span className="text-zinc-500 block mb-1">Kecepatan Pengerjaan:</span>
+                  <span className="text-slate-500 block mb-1 font-bold">Kecepatan Pengerjaan:</span>
                   <select
                     value={calcSpeed}
                     onChange={(e: any) => setCalcSpeed(e.target.value)}
-                    className="w-full bg-zinc-950 border border-zinc-850 p-1.5 text-zinc-300 rounded focus:outline-none focus:ring-1 focus:ring-sky-500 text-xs"
+                    className="w-full bg-slate-50 border border-slate-200 p-1.5 text-slate-700 rounded focus:outline-none focus:ring-1 focus:ring-blue-500 text-xs font-semibold"
                   >
                     <option value="regular">Reguler (24 Jam)</option>
                     <option value="express">Express (6-12 Jam) (+50%)</option>
@@ -886,22 +952,22 @@ export default function CustomerPortal({
               </div>
 
               {/* Perfume selections */}
-              <div className="space-y-2 border-t border-zinc-800/60 pt-3">
-                <span className="text-[10px] font-mono tracking-wider text-zinc-400 uppercase block">Aroma Pewangi Premium (Gratis):</span>
+              <div className="space-y-2 border-t border-slate-100 pt-3">
+                <span className="text-[10px] font-mono tracking-wider text-slate-500 uppercase block font-bold">Aroma Pewangi Premium (Gratis):</span>
                 <div className="grid grid-cols-3 gap-1.5">
                   {[
-                    { name: "Lavender Blossom", color: "from-violet-500/20 to-indigo-500/10 border-violet-500/30", text: "text-violet-400" },
-                    { name: "Downy Mystique", color: "from-pink-500/20 to-rose-500/10 border-pink-500/30", text: "text-pink-400" },
-                    { name: "Ocean Breeze", color: "from-sky-500/20 to-blue-500/10 border-sky-500/30", text: "text-sky-400" }
+                    { name: "Lavender Blossom", color: "from-violet-50 to-indigo-50 border-violet-200 text-violet-700 hover:bg-violet-100", text: "text-violet-600" },
+                    { name: "Downy Mystique", color: "from-pink-50 to-rose-50 border-pink-200 text-pink-700 hover:bg-pink-100", text: "text-pink-600" },
+                    { name: "Ocean Breeze", color: "from-sky-50 to-blue-50 border-sky-200 text-sky-700 hover:bg-sky-100", text: "text-sky-600" }
                   ].map((frag) => (
                     <button
                       key={frag.name}
                       type="button"
                       onClick={() => setCalcPerfume(frag.name)}
-                      className={`p-1.5 rounded-lg border text-[10px] font-medium text-center transition cursor-pointer flex flex-col items-center justify-center ${
+                      className={`p-1.5 rounded-lg border text-[10px] font-bold text-center transition cursor-pointer flex flex-col items-center justify-center ${
                         calcPerfume === frag.name
-                          ? `${frag.color} border-sky-500 bg-sky-950/20 font-bold ${frag.text}`
-                          : "border-zinc-850 bg-zinc-950 text-zinc-400 hover:text-zinc-200"
+                          ? `${frag.color} border-blue-500 bg-blue-50/50 font-extrabold`
+                          : "border-slate-200 bg-white text-slate-600 hover:text-slate-800 hover:bg-slate-50"
                       }`}
                     >
                       <span>🌸</span>
@@ -911,16 +977,16 @@ export default function CustomerPortal({
                 </div>
 
                 {/* Perfume Strength Slider */}
-                <div className="flex items-center justify-between text-[11px] bg-zinc-950 p-2 rounded-lg border border-zinc-850 mt-1">
-                  <span className="text-zinc-400">Kepekatan Parfum:</span>
+                <div className="flex items-center justify-between text-[11px] bg-slate-50 p-2 rounded-lg border border-slate-200 mt-1">
+                  <span className="text-slate-500 font-bold">Kepekatan Parfum:</span>
                   <div className="flex gap-1.5">
                     <button
                       type="button"
                       onClick={() => setCalcPerfumeStrength("normal")}
                       className={`px-2 py-0.5 rounded text-[10px] font-bold cursor-pointer ${
                         calcPerfumeStrength === "normal"
-                          ? "bg-zinc-800 text-sky-400"
-                          : "text-zinc-500 hover:text-zinc-350"
+                          ? "bg-blue-600 text-white"
+                          : "text-slate-400 hover:text-slate-600"
                       }`}
                     >
                       Sedang
@@ -930,8 +996,8 @@ export default function CustomerPortal({
                       onClick={() => setCalcPerfumeStrength("extra")}
                       className={`px-2 py-0.5 rounded text-[10px] font-bold cursor-pointer ${
                         calcPerfumeStrength === "extra"
-                          ? "bg-amber-500/10 text-amber-400 border border-amber-500/20"
-                          : "text-zinc-500 hover:text-zinc-350"
+                          ? "bg-yellow-500 text-white"
+                          : "text-slate-400 hover:text-slate-600"
                       }`}
                     >
                       Ekstra Harum (+Rp 5k)
@@ -941,10 +1007,10 @@ export default function CustomerPortal({
               </div>
 
               {/* Display simulated calculations */}
-              <div className="bg-zinc-950 p-3 rounded-xl border border-zinc-850 flex items-center justify-between text-xs mt-1.5">
+              <div className="bg-slate-50 p-3 rounded-xl border border-slate-200 flex items-center justify-between text-xs mt-1.5">
                 <div>
-                  <p className="text-zinc-500 text-[10px] uppercase font-mono font-bold">Estimasi Total Biaya:</p>
-                  <p className="text-md font-bold font-mono text-emerald-400 mt-0.5">
+                  <p className="text-slate-500 text-[10px] uppercase font-mono font-bold">Estimasi Total Biaya:</p>
+                  <p className="text-md font-extrabold font-mono text-blue-600 mt-0.5">
                     Rp {(() => {
                       let basePrice = calcCategory === "wash-fold" ? 10000 : calcCategory === "wash-iron" ? 15000 : 7000;
                       let total = basePrice * calcWeight;
@@ -955,6 +1021,7 @@ export default function CustomerPortal({
                   </p>
                 </div>
                 <button
+                  type="button"
                   onClick={() => {
                     // Set booking inputs automatically!
                     setServiceType(calcCategory.replace("-", "_"));
@@ -963,7 +1030,7 @@ export default function CustomerPortal({
                     setActiveTab("order");
                     alert(`Simulasi berhasil diterapkan ke form pemesanan! Silakan pilih mitra laundry Anda.`);
                   }}
-                  className="px-2.5 py-2 bg-sky-600 hover:bg-sky-500 text-white font-bold text-[10px] rounded-lg transition cursor-pointer shrink-0"
+                  className="px-2.5 py-2 bg-blue-600 hover:bg-blue-700 text-white font-bold text-[10px] rounded-lg transition cursor-pointer shrink-0 shadow-sm"
                 >
                   Gunakan Simulasi Ini ➔
                 </button>
@@ -971,31 +1038,31 @@ export default function CustomerPortal({
             </div>
 
             {/* Partners Aggregator Directory */}
-            <div className="bg-zinc-900/90 border border-zinc-800 rounded-2xl p-5 shadow-lg flex flex-col space-y-4">
+            <div className="bg-white border border-slate-200 rounded-2xl p-5 shadow-sm flex flex-col space-y-4">
               <div>
-                <h3 className="font-sans font-bold text-sm text-zinc-100 flex items-center gap-2">
-                  <Store className="w-4 h-4 text-violet-400" />
+                <h3 className="font-sans font-extrabold text-sm text-slate-950 flex items-center gap-2">
+                  <Store className="w-4 h-4 text-blue-600" />
                   Direktori Jasa Laundry Sekitar Anda (Pihak Ketiga)
                 </h3>
-                <p className="text-[11px] text-zinc-400 mt-1 leading-relaxed">
+                <p className="text-[11px] text-slate-500 mt-1 leading-relaxed">
                   Kami bertindak sebagai <strong>pihak ketiga</strong> yang mengagregasikan usaha laundry lokal terdekat. Kami menjamin kurir pengiriman, asuransi pakaian hilang, dan pembayaran aman (escrow).
                 </p>
               </div>
 
               {/* MODUL INTEGRASI GOOGLE MAPS & APPLE MAPS INTERAKTIF */}
-              <div className="bg-gradient-to-br from-zinc-950 to-zinc-900 border border-zinc-800 rounded-2xl p-4 space-y-3.5">
+              <div className="bg-slate-50 border border-slate-200 rounded-2xl p-4 space-y-3.5">
                 <div className="flex flex-col sm:flex-row justify-between sm:items-center gap-2">
-                  <span className="text-[10px] font-mono tracking-wider text-sky-400 uppercase font-extrabold flex items-center gap-1.5">
-                    <span className="inline-block w-2.5 h-2.5 bg-emerald-500 rounded-full animate-pulse" />
+                  <span className="text-[10px] font-mono tracking-wider text-blue-600 uppercase font-extrabold flex items-center gap-1.5">
+                    <span className="inline-block w-2.5 h-2.5 bg-blue-600 rounded-full animate-pulse" />
                     🛰️ Peta Satelit Interaktif Jasa Laundry Terdekat
                   </span>
-                  <span className="text-[10px] text-zinc-500 font-mono">
+                  <span className="text-[10px] text-slate-500 font-mono">
                     Lokasi Anda: {customerLat.toFixed(4)}, {customerLng.toFixed(4)}
                   </span>
                 </div>
 
                 {/* Live Real-World Satellite Map Component */}
-                <div className="h-[280px] w-full bg-zinc-950 rounded-xl overflow-hidden border border-zinc-800/80">
+                <div className="h-[280px] w-full bg-slate-100 rounded-xl overflow-hidden border border-slate-200">
                   <InteractiveMap
                     mode="directory"
                     customerLat={customerLat}
@@ -1012,12 +1079,12 @@ export default function CustomerPortal({
                     }}
                   />
                 </div>
-                <p className="text-[10px] text-zinc-500 leading-relaxed">
-                  💡 <strong className="text-zinc-300">Tips Peta:</strong> Klik di mana saja pada peta atau geser pin hijau untuk mengubah titik lokasi penjemputan Anda secara real-time. Klik ikon laundry warna ungu untuk melihat nama toko dan klik <strong>"Pilih Mitra"</strong> untuk memesan!
+                <p className="text-[10px] text-slate-500 leading-relaxed">
+                  💡 <strong className="text-slate-800">Tips Peta:</strong> Klik di mana saja pada peta atau geser pin hijau untuk mengubah titik lokasi penjemputan Anda secara real-time. Klik ikon laundry warna ungu untuk melihat nama toko dan klik <strong>"Pilih Mitra"</strong> untuk memesan!
                 </p>
 
-                <div className="space-y-2 pt-2 border-t border-zinc-850">
-                  <label className="block text-[11px] font-bold text-zinc-300">
+                <div className="space-y-2 pt-2 border-t border-slate-200">
+                  <label className="block text-[11px] font-bold text-slate-700">
                     Atau Pilih Lokasi Cepat (Simulasi Area Jakarta):
                   </label>
                   <div className="grid grid-cols-2 sm:grid-cols-5 gap-1.5">
@@ -1039,27 +1106,27 @@ export default function CustomerPortal({
                         }}
                         className={`px-2 py-1.5 rounded-lg text-[10px] font-bold transition ${
                           selectedAreaName.includes(loc.name)
-                            ? "bg-indigo-600 text-white shadow shadow-indigo-600/30"
-                            : "bg-zinc-900 hover:bg-zinc-850 text-zinc-400 border border-zinc-800"
+                            ? "bg-blue-600 text-white shadow shadow-blue-600/20"
+                            : "bg-white hover:bg-slate-50 text-slate-600 border border-slate-200"
                         }`}
                       >
                         📍 {loc.name}
                       </button>
                     ))}
                   </div>
-                  <p className="text-[10px] text-zinc-500 mt-1">
-                    Saat ini Anda di: <strong className="text-zinc-300">{selectedAreaName}</strong>. Jarak ke semua mitra laundry terhitung real-time menggunakan koordinat GPS ini.
+                  <p className="text-[10px] text-slate-500 mt-1">
+                    Saat ini Anda di: <strong className="text-slate-800">{selectedAreaName}</strong>. Jarak ke semua mitra laundry terhitung real-time menggunakan koordinat GPS ini.
                   </p>
                 </div>
 
                 {/* External Maps Launcher & New Partner Register */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 pt-1 border-t border-zinc-850">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 pt-1 border-t border-slate-200">
                   <div className="flex gap-1.5">
                     <a
                       href={`https://www.google.com/maps/search/laundry+near+${customerLat},${customerLng}`}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="flex-1 py-1.5 bg-sky-950/40 hover:bg-sky-900/40 border border-sky-900/35 rounded-lg text-[10px] font-bold text-sky-400 text-center flex items-center justify-center gap-1 transition"
+                      className="flex-1 py-1.5 bg-blue-50 hover:bg-blue-100 border border-blue-200 rounded-lg text-[10px] font-bold text-blue-700 text-center flex items-center justify-center gap-1 transition"
                     >
                       🌐 Cari Google Maps ➔
                     </a>
@@ -1067,7 +1134,7 @@ export default function CustomerPortal({
                       href={`maps://?q=laundry&sll=${customerLat},${customerLng}`}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="flex-1 py-1.5 bg-zinc-900 hover:bg-zinc-850 border border-zinc-800 rounded-lg text-[10px] font-bold text-zinc-300 text-center flex items-center justify-center gap-1 transition"
+                      className="flex-1 py-1.5 bg-slate-100 hover:bg-slate-200 border border-slate-300 rounded-lg text-[10px] font-bold text-slate-700 text-center flex items-center justify-center gap-1 transition"
                     >
                       🍎 Cari Apple Maps ➔
                     </a>
@@ -1107,7 +1174,7 @@ export default function CustomerPortal({
                         }
                       });
                     }}
-                    className="py-1.5 bg-emerald-600 hover:bg-emerald-500 text-white rounded-lg text-[10px] font-bold flex items-center justify-center gap-1 transition shadow-lg shadow-emerald-600/10 cursor-pointer"
+                    className="py-1.5 bg-emerald-600 hover:bg-emerald-500 text-white rounded-lg text-[10px] font-bold flex items-center justify-center gap-1 transition shadow-sm cursor-pointer"
                   >
                     ➕ Jadikan Laundry Sekitar Sebagai Mitra Baru
                   </button>
@@ -1121,12 +1188,12 @@ export default function CustomerPortal({
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   placeholder="🔍 Cari nama laundry, alamat, atau spesialisasi..."
-                  className="w-full bg-zinc-950 text-xs border border-zinc-850 p-2.5 pl-3 pr-8 rounded-xl focus:outline-none focus:ring-1 focus:ring-sky-500 text-zinc-200"
+                  className="w-full bg-slate-50 text-xs border border-slate-200 p-2.5 pl-3 pr-8 rounded-xl focus:outline-none focus:ring-1 focus:ring-blue-500 text-slate-800 font-medium"
                 />
                 {searchQuery && (
                   <button 
                     onClick={() => setSearchQuery("")} 
-                    className="absolute right-2.5 top-2.5 text-zinc-500 hover:text-zinc-300 text-xs font-bold"
+                    className="absolute right-2.5 top-2.5 text-slate-400 hover:text-slate-600 text-xs font-bold"
                   >
                     ×
                   </button>
@@ -1135,7 +1202,7 @@ export default function CustomerPortal({
 
               {/* 2. Category Filter Pills */}
               <div>
-                <p className="text-[10px] font-mono tracking-wider text-zinc-400 uppercase mb-2">Pilih Layanan / Kategori:</p>
+                <p className="text-[10px] font-mono tracking-wider text-slate-500 uppercase mb-2 font-bold">Pilih Layanan / Kategori:</p>
                 <div className="flex flex-wrap gap-1.5">
                   {[
                     { id: "all", name: "Semua" },
@@ -1147,10 +1214,10 @@ export default function CustomerPortal({
                     <button
                       key={cat.id}
                       onClick={() => setCategoryFilter(cat.id)}
-                      className={`px-2.5 py-1 rounded-lg text-[10px] font-semibold transition ${
+                      className={`px-2.5 py-1 rounded-lg text-[10px] font-bold transition ${
                         categoryFilter === cat.id
-                          ? "bg-sky-500 text-white font-bold"
-                          : "bg-zinc-950 text-zinc-400 hover:text-zinc-200 border border-zinc-850"
+                          ? "bg-blue-600 text-white font-bold shadow-sm"
+                          : "bg-white text-slate-600 hover:text-slate-800 border border-slate-200"
                       }`}
                     >
                       {cat.name}
@@ -1162,37 +1229,37 @@ export default function CustomerPortal({
               {/* 3. Sorting and Pricing Budget Controls */}
               <div className="grid grid-cols-2 gap-3 pt-1">
                 <div>
-                  <label className="block text-[10px] font-mono text-zinc-400 uppercase mb-1">Urutkan (Sort):</label>
+                  <label className="block text-[10px] font-mono text-slate-500 uppercase mb-1 font-bold">Urutkan (Sort):</label>
                   <select
                     value={sortBy}
                     onChange={(e: any) => setSortBy(e.target.value)}
-                    className="w-full bg-zinc-950 text-[11px] border border-zinc-850 p-2 rounded-lg text-zinc-300 focus:outline-none focus:ring-1 focus:ring-sky-500 font-sans"
+                    className="w-full bg-slate-50 text-[11px] border border-slate-200 p-2 rounded-lg text-slate-700 focus:outline-none focus:ring-1 focus:ring-blue-500 font-sans font-semibold"
                   >
-                    <option value="distance">📍 Terdekat (Nearest)</option>
-                    <option value="rating">⭐️ Rating Tertinggi</option>
-                    <option value="price_low">💵 Harga Terendah</option>
-                    <option value="price_high">💎 Harga Termahal</option>
-                    <option value="popularity">🔥 Paling Populer</option>
+                    <option value="distance font-semibold">📍 Terdekat (Nearest)</option>
+                    <option value="rating font-semibold">⭐️ Rating Tertinggi</option>
+                    <option value="price_low font-semibold">💵 Harga Terendah</option>
+                    <option value="price_high font-semibold">💎 Harga Termahal</option>
+                    <option value="popularity font-semibold">🔥 Paling Populer</option>
                   </select>
                 </div>
                 <div>
-                  <label className="block text-[10px] font-mono text-zinc-400 uppercase mb-1">Max Tarif Layanan:</label>
+                  <label className="block text-[10px] font-mono text-slate-500 uppercase mb-1 font-bold">Max Tarif Layanan:</label>
                   <select
                     value={maxPriceLimit}
                     onChange={(e) => setMaxPriceLimit(parseFloat(e.target.value))}
-                    className="w-full bg-zinc-950 text-[11px] border border-zinc-850 p-2 rounded-lg text-zinc-300 focus:outline-none focus:ring-1 focus:ring-sky-500"
+                    className="w-full bg-slate-50 text-[11px] border border-slate-200 p-2 rounded-lg text-slate-700 focus:outline-none focus:ring-1 focus:ring-blue-500 font-semibold"
                   >
-                    <option value="20">Semua Harga</option>
-                    <option value="12">Di bawah $12 (Rp 180rb)</option>
-                    <option value="5">Di bawah $5 (Rp 75rb)</option>
-                    <option value="2">Di bawah $2 (Rp 30rb)</option>
+                    <option value="20 font-semibold">Semua Harga</option>
+                    <option value="12 font-semibold">Di bawah $12 (Rp 180rb)</option>
+                    <option value="5 font-semibold">Di bawah $5 (Rp 75rb)</option>
+                    <option value="2 font-semibold">Di bawah $2 (Rp 30rb)</option>
                   </select>
                 </div>
               </div>
 
               {/* Verified Platform Guarantee Indicator */}
-              <div className="bg-sky-950/25 border border-sky-900/35 p-2 rounded-xl text-[10px] text-sky-400 leading-relaxed flex items-start gap-1.5">
-                <CheckCircle className="w-3.5 h-3.5 text-sky-400 shrink-0 mt-0.5" />
+              <div className="bg-blue-50 border border-blue-200 p-2.5 rounded-xl text-[10px] text-blue-700 leading-relaxed flex items-start gap-1.5 shadow-sm font-medium">
+                <CheckCircle className="w-3.5 h-3.5 text-blue-600 shrink-0 mt-0.5" />
                 <span>Setiap mitra laundry telah melalui sertifikasi uji higienitas air & detergen. Dilindungi asuransi platform s/d Rp 500.000.</span>
               </div>
 
@@ -1262,35 +1329,35 @@ export default function CustomerPortal({
                           setSelectedPartner(p);
                           setActiveTab("order");
                         }}
-                        className="group bg-zinc-950 border border-zinc-850 hover:border-zinc-700 hover:bg-zinc-900/40 p-3 rounded-xl transition cursor-pointer flex gap-3"
+                        className="group bg-white border border-slate-200 hover:border-blue-500 hover:shadow-md p-3.5 rounded-xl transition cursor-pointer flex gap-3 shadow-sm"
                       >
                         <img 
                           src={p.logoUrl} 
                           alt={p.businessName} 
-                          className="w-12 h-12 rounded-lg object-cover border border-zinc-800 shrink-0 self-start" 
+                          className="w-12 h-12 rounded-lg object-cover border border-slate-200 shrink-0 self-start" 
                         />
                         <div className="flex-1 min-w-0 space-y-1">
                           <div className="flex items-start justify-between gap-1.5">
-                            <h4 className="text-[11px] font-bold text-zinc-200 truncate group-hover:text-sky-400 transition">
+                            <h4 className="text-[12px] font-extrabold text-slate-900 truncate group-hover:text-blue-600 transition">
                               {p.businessName}
                             </h4>
-                            <div className="flex items-center gap-1 font-mono text-[9px] text-amber-400 shrink-0 bg-amber-950/20 border border-amber-900/30 px-1.5 py-0.2 rounded">
-                              <Star className="w-2.5 h-2.5 fill-amber-400" />
+                            <div className="flex items-center gap-1 font-mono text-[9px] text-yellow-700 shrink-0 bg-yellow-100 border border-yellow-300 px-1.5 py-0.2 rounded font-bold">
+                              <Star className="w-2.5 h-2.5 fill-yellow-500 text-yellow-500" />
                               {p.ratingAvg > 0 ? p.ratingAvg.toFixed(1) : "New"}
                             </div>
                           </div>
 
-                          <p className="text-[10px] text-zinc-400 line-clamp-1.5 leading-relaxed">
+                          <p className="text-[10px] text-slate-500 line-clamp-1.5 leading-relaxed">
                             {p.description}
                           </p>
 
                           {/* Dynamic Price Range Indicator */}
-                          <div className="flex items-center gap-1 text-[10px] text-emerald-400 font-semibold">
+                          <div className="flex items-center gap-1 text-[10px] text-blue-600 font-bold">
                             <span>Range Tarif:</span>
-                            <span className="font-mono bg-emerald-950/15 border border-emerald-900/20 px-1 py-0.2 rounded text-[9px]">
+                            <span className="font-mono bg-blue-50 border border-blue-200 px-1 py-0.2 rounded text-[9px] text-blue-700">
                               {formattedRupiahRange}
                             </span>
-                            <span className="text-[9px] text-zinc-500 font-mono">(${range.min.toFixed(2)} - ${range.max.toFixed(2)})</span>
+                            <span className="text-[9px] text-slate-400 font-mono">(${range.min.toFixed(2)} - ${range.max.toFixed(2)})</span>
                           </div>
 
                           {/* Direct External Maps Launch Row */}
@@ -1299,7 +1366,7 @@ export default function CustomerPortal({
                               href={`https://www.google.com/maps/dir/?api=1&destination=${p.businessLat},${p.businessLng}`}
                               target="_blank"
                               rel="noopener noreferrer"
-                              className="px-2 py-1 bg-zinc-900 hover:bg-zinc-850 hover:text-sky-400 border border-zinc-800 rounded text-[9px] font-bold text-zinc-400 transition flex items-center gap-1 cursor-pointer"
+                              className="px-2 py-1 bg-slate-50 hover:bg-slate-100 hover:text-blue-600 border border-slate-200 rounded text-[9px] font-bold text-slate-500 transition flex items-center gap-1 cursor-pointer"
                             >
                               🗺️ Buka Rute Google Maps ➔
                             </a>
@@ -1307,21 +1374,21 @@ export default function CustomerPortal({
                               href={`maps://?daddr=${p.businessLat},${p.businessLng}`}
                               target="_blank"
                               rel="noopener noreferrer"
-                              className="px-2 py-1 bg-zinc-900 hover:bg-zinc-850 hover:text-zinc-200 border border-zinc-800 rounded text-[9px] font-bold text-zinc-400 transition flex items-center gap-1 cursor-pointer"
+                              className="px-2 py-1 bg-slate-50 hover:bg-slate-100 hover:text-slate-850 border border-slate-200 rounded text-[9px] font-bold text-slate-500 transition flex items-center gap-1 cursor-pointer"
                             >
                               🍎 Buka Apple Maps
                             </a>
                           </div>
 
-                          <div className="flex items-center justify-between mt-2 pt-1.5 border-t border-zinc-900 text-[9px] text-zinc-500">
+                          <div className="flex items-center justify-between mt-2 pt-1.5 border-t border-slate-100 text-[9px] text-slate-400">
                             <span className="flex items-center gap-1">
-                              <MapPin className="w-3 h-3 text-zinc-600" /> 
+                              <MapPin className="w-3 h-3 text-slate-400" /> 
                               <span>{distance} km</span>
-                              <span className="text-zinc-700">•</span>
+                              <span className="text-slate-300">•</span>
                               <span className="truncate max-w-[120px]">{p.businessAddress}</span>
                             </span>
-                            <span className="text-sky-400 font-bold group-hover:underline flex items-center shrink-0">
-                              Pilih Jasa <ChevronRight className="w-3 h-3" />
+                            <span className="text-blue-600 font-extrabold group-hover:underline flex items-center shrink-0">
+                              Pilih Jasa <ChevronRight className="w-3 h-3 text-blue-600" />
                             </span>
                           </div>
                         </div>
@@ -1362,21 +1429,21 @@ export default function CustomerPortal({
 
       {/* --- TAB 2: ORDER WIZARD --- */}
       {activeTab === "order" && (
-        <div className="bg-zinc-900/90 border border-zinc-800 rounded-2xl overflow-hidden shadow-2xl">
-          <div className="p-5 bg-gradient-to-r from-zinc-900 to-zinc-950 border-b border-zinc-800">
-            <h2 className="font-sans font-extrabold text-base text-zinc-100">Book Premium Laundry Pickup</h2>
-            <p className="text-xs text-zinc-400 mt-1">Configure your laundry items, schedule coordinates, and choose a verified partner.</p>
+        <div className="bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-sm">
+          <div className="p-5 bg-slate-50 border-b border-slate-200">
+            <h2 className="font-sans font-extrabold text-base text-slate-900">Pesan Layanan Penjemputan CleanUp</h2>
+            <p className="text-xs text-slate-500 mt-1">Konfigurasikan detail pakaian Anda, rute pengiriman, dan pilih mitra laundry terpercaya.</p>
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-12">
             
             {/* Left panel: configure */}
-            <div className="lg:col-span-7 p-6 border-r border-zinc-800 space-y-6">
+            <div className="lg:col-span-7 p-6 border-r border-slate-200 space-y-6">
               
               {/* Partner Select Dropdown */}
               <div>
-                <label className="block text-xs font-bold text-zinc-300 uppercase tracking-wider mb-2">
-                  Select Laundry Partner Workshop:
+                <label className="block text-xs font-extrabold text-slate-700 uppercase tracking-wider mb-2">
+                  Pilih Workshop Mitra Laundry:
                 </label>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                   {partners.filter(p => p.isApproved).map((p) => {
@@ -1392,18 +1459,18 @@ export default function CustomerPortal({
                         onClick={() => setSelectedPartner(p)}
                         className={`p-3 rounded-xl border cursor-pointer transition flex items-center gap-3 ${
                           selectedPartner?.id === p.id 
-                            ? "bg-sky-950/20 border-sky-500/80 shadow shadow-sky-500/10 animate-pulse-once" 
-                            : "bg-zinc-950/50 border-zinc-800 hover:border-zinc-700 text-zinc-300"
+                            ? "bg-blue-50/70 border-blue-500 shadow-sm" 
+                            : "bg-white border-slate-200 hover:border-slate-300 text-slate-700"
                         }`}
                       >
-                        <img src={p.logoUrl} alt="" className="w-9 h-9 rounded-lg object-cover shrink-0" />
+                        <img src={p.logoUrl} alt="" className="w-9 h-9 rounded-lg object-cover shrink-0 border border-slate-200" />
                         <div className="min-w-0 flex-1">
-                          <p className="text-xs font-bold truncate">{p.businessName}</p>
-                          <div className="flex items-center justify-between text-[9px] text-zinc-400 mt-0.5 font-mono">
-                            <span className="text-amber-400 font-bold">★ {p.ratingAvg > 0 ? p.ratingAvg.toFixed(1) : "New"}</span>
+                          <p className="text-xs font-bold truncate text-slate-900">{p.businessName}</p>
+                          <div className="flex items-center justify-between text-[9px] text-slate-400 mt-0.5 font-mono">
+                            <span className="text-yellow-600 font-bold">★ {p.ratingAvg > 0 ? p.ratingAvg.toFixed(1) : "New"}</span>
                             <span>• {distance} km</span>
                           </div>
-                          <p className="text-[9px] text-emerald-400 font-semibold mt-0.5">{formattedRupiahRange}</p>
+                          <p className="text-[9px] text-blue-600 font-bold mt-0.5">{formattedRupiahRange}</p>
                         </div>
                       </div>
                     );
@@ -1413,42 +1480,42 @@ export default function CustomerPortal({
 
               {/* Service Selection */}
               <div>
-                <label className="block text-xs font-bold text-zinc-300 uppercase tracking-wider mb-2">
-                  Select Washing & Care Service:
+                <label className="block text-xs font-extrabold text-slate-700 uppercase tracking-wider mb-2">
+                  Pilih Kategori Perawatan:
                 </label>
                 <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
                   {[
-                    { id: "wash_fold", label: "Wash & Fold", desc: "Per Kg", icon: "🧺" },
-                    { id: "wash_iron", label: "Wash & Steam", desc: "Per Kg", icon: "💨" },
+                    { id: "wash_fold", label: "Cuci Lipat", desc: "Per Kg", icon: "🧺" },
+                    { id: "wash_iron", label: "Cuci Setrika", desc: "Per Kg", icon: "💨" },
                     { id: "dry_clean", label: "Dry Clean", desc: "Per Item", icon: "🧣" },
-                    { id: "iron_only", label: "Iron Only", desc: "Per Item", icon: "🔌" }
+                    { id: "iron_only", label: "Setrika Saja", desc: "Per Item", icon: "🔌" }
                   ].map((srv) => (
                     <div 
                       key={srv.id}
                       onClick={() => setServiceType(srv.id)}
                       className={`p-3 rounded-xl border text-center cursor-pointer transition ${
                         serviceType === srv.id 
-                          ? "bg-sky-950/20 border-sky-500/80" 
-                          : "bg-zinc-950/50 border-zinc-800 hover:border-zinc-700"
+                          ? "bg-blue-50 border-blue-500" 
+                          : "bg-white border-slate-200 hover:border-slate-300"
                       }`}
                     >
                       <span className="text-xl block mb-1.5">{srv.icon}</span>
-                      <p className="text-xs font-bold text-zinc-200">{srv.label}</p>
-                      <p className="text-[9px] text-zinc-500 mt-0.5">{srv.desc}</p>
+                      <p className="text-xs font-bold text-slate-800">{srv.label}</p>
+                      <p className="text-[9px] text-slate-400 mt-0.5 font-semibold">{srv.desc}</p>
                     </div>
                   ))}
                 </div>
               </div>
 
               {/* Dynamic Capacity Bag Calculator */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 bg-zinc-950/40 p-4 border border-zinc-800/80 rounded-xl">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 bg-slate-50 p-4 border border-slate-200 rounded-xl">
                 {isWeightBased ? (
                   <div>
                     <div className="flex justify-between items-center mb-1.5">
-                      <label className="text-xs font-bold text-zinc-300 uppercase tracking-wider">
-                        Estimated Weight (Kg):
+                      <label className="text-xs font-extrabold text-slate-700 uppercase tracking-wider">
+                        Estimasi Berat (Kg):
                       </label>
-                      <span className="text-xs font-mono font-extrabold text-sky-400">{weightKg.toFixed(1)} Kg</span>
+                      <span className="text-xs font-mono font-extrabold text-blue-600">{weightKg.toFixed(1)} Kg</span>
                     </div>
                     <input 
                       type="range" 
@@ -1457,22 +1524,22 @@ export default function CustomerPortal({
                       step="0.5"
                       value={weightKg}
                       onChange={(e) => setWeightKg(parseFloat(e.target.value))}
-                      className="w-full accent-sky-500 cursor-ew-resize bg-zinc-800 h-1.5 rounded-lg"
+                      className="w-full accent-blue-600 cursor-ew-resize bg-slate-200 h-1.5 rounded-lg"
                     />
-                    <p className="text-[10px] text-zinc-500 mt-1 leading-relaxed">Typical personal bag is 4–7 Kg. Heavy sheets or family laundry is 10+ Kg.</p>
+                    <p className="text-[10px] text-slate-400 mt-1 leading-relaxed">Satu kantong cucian personal standar biasanya berukuran 4–7 Kg.</p>
                   </div>
                 ) : (
                   <div>
                     <div className="flex justify-between items-center mb-1.5">
-                      <label className="text-xs font-bold text-zinc-300 uppercase tracking-wider">
-                        Estimated Garment Items:
+                      <label className="text-xs font-extrabold text-slate-700 uppercase tracking-wider">
+                        Jumlah Pakaian/Item:
                       </label>
-                      <span className="text-xs font-mono font-extrabold text-sky-400">{itemCount} items</span>
+                      <span className="text-xs font-mono font-extrabold text-blue-600">{itemCount} items</span>
                     </div>
                     <div className="flex items-center gap-2">
                       <button 
                         onClick={() => setItemCount(Math.max(1, itemCount - 1))}
-                        className="w-8 h-8 rounded bg-zinc-800 hover:bg-zinc-700 text-sm font-bold text-zinc-200 flex items-center justify-center border border-zinc-700"
+                        className="w-8 h-8 rounded bg-white hover:bg-slate-100 text-sm font-bold text-slate-600 flex items-center justify-center border border-slate-200"
                       >
                         -
                       </button>
@@ -1480,189 +1547,195 @@ export default function CustomerPortal({
                         type="number"
                         value={itemCount}
                         onChange={(e) => setItemCount(Math.max(1, parseInt(e.target.value) || 1))}
-                        className="w-20 h-8 text-center bg-zinc-950 border border-zinc-800 rounded font-mono text-xs focus:ring-1 focus:ring-sky-500"
+                        className="w-20 h-8 text-center bg-white border border-slate-200 rounded font-mono text-xs focus:ring-1 focus:ring-blue-500 font-bold"
                         placeholder="Jumlah"
                       />
                       <button 
                         onClick={() => setItemCount(itemCount + 1)}
-                        className="w-8 h-8 rounded bg-zinc-800 hover:bg-zinc-700 text-sm font-bold text-zinc-200 flex items-center justify-center border border-zinc-700"
+                        className="w-8 h-8 rounded bg-white hover:bg-slate-100 text-sm font-bold text-slate-600 flex items-center justify-center border border-slate-200"
                       >
                         +
                       </button>
                     </div>
-                    <p className="text-[10px] text-zinc-500 mt-1 leading-relaxed">
-                      Dihitung per potong pakaian. 📱 <strong className="text-sky-400">Bisa diketik langsung</strong> untuk memudahkan pengguna HP & Tablet.
+                    <p className="text-[10px] text-slate-400 mt-1 leading-relaxed">
+                      Dihitung per potong pakaian. 📱 <strong className="text-blue-600">Bisa diketik langsung</strong> untuk kemudahan pengguna tablet & HP.
                     </p>
                   </div>
                 )}
 
                 <div>
-                  <label className="block text-xs font-bold text-zinc-300 uppercase tracking-wider mb-1.5">
-                    Jumlah Total Pakaian (Bisa Diketik):
+                  <label className="block text-xs font-extrabold text-slate-700 uppercase tracking-wider mb-1.5">
+                    Total Potong Pakaian (Ketik Bebas):
                   </label>
                   <input 
                     type="number" 
                     value={itemCount} 
                     onChange={(e) => setItemCount(parseInt(e.target.value) || 0)}
                     placeholder="Contoh: 15"
-                    className="w-full bg-zinc-950/60 border border-zinc-800 rounded-lg p-2 text-xs focus:ring-1 focus:ring-sky-500 focus:outline-none text-zinc-200 font-mono"
+                    className="w-full bg-white border border-slate-200 rounded-lg p-2 text-xs focus:ring-1 focus:ring-blue-500 focus:outline-none text-slate-800 font-mono font-bold"
                   />
-                  <p className="text-[10px] text-zinc-500 mt-1">Sangat memudahkan audit jumlah pakaian oleh mitra laundry terdekat saat serah terima.</p>
+                  <p className="text-[10px] text-slate-400 mt-1">Sangat memudahkan asisten kami mencocokkan jumlah baju saat proses pick-up.</p>
                 </div>
               </div>
 
               {/* Geolocation Pickup & delivery details */}
               <div className="space-y-3.5">
-                <label className="block text-xs font-bold text-zinc-300 uppercase tracking-wider">
-                  Pickup & Delivery Addresses:
+                <label className="block text-xs font-extrabold text-slate-700 uppercase tracking-wider">
+                  Alamat Penjemputan & Pengantaran:
                 </label>
                 <div className="relative">
-                  <span className="absolute left-3 top-2.5 text-zinc-500"><MapPin className="w-4 h-4 text-emerald-400" /></span>
+                  <span className="absolute left-3 top-2.5 text-slate-400"><MapPin className="w-4 h-4 text-blue-600" /></span>
                   <input 
                     type="text" 
                     value={pickupAddress}
                     onChange={(e) => setPickupAddress(e.target.value)}
-                    placeholder="Pickup address"
-                    className="w-full bg-zinc-950/60 border border-zinc-800 rounded-lg py-2 pl-9 pr-3 text-xs focus:ring-1 focus:ring-sky-500 focus:outline-none text-zinc-200"
+                    placeholder="Alamat Penjemputan lengkap"
+                    className="w-full bg-slate-50 border border-slate-200 rounded-lg py-2 pl-9 pr-3 text-xs focus:ring-1 focus:ring-blue-500 focus:outline-none text-slate-800 font-semibold"
                   />
                 </div>
                 <div className="relative">
-                  <span className="absolute left-3 top-2.5 text-zinc-500"><Info className="w-4 h-4 text-zinc-600" /></span>
+                  <span className="absolute left-3 top-2.5 text-slate-400"><Info className="w-4 h-4 text-slate-400" /></span>
                   <input 
                     type="text" 
                     value={pickupNotes}
                     onChange={(e) => setPickupNotes(e.target.value)}
-                    placeholder="Gate codes, instructions for the rider"
-                    className="w-full bg-zinc-950/60 border border-zinc-800 rounded-lg py-2 pl-9 pr-3 text-xs focus:ring-1 focus:ring-sky-500 focus:outline-none text-zinc-200"
+                    placeholder="Catatan tambahan (contoh: patokan gerbang, kode lobi, dsb.)"
+                    className="w-full bg-slate-50 border border-slate-200 rounded-lg py-2 pl-9 pr-3 text-xs focus:ring-1 focus:ring-blue-500 focus:outline-none text-slate-800 font-semibold"
                   />
                 </div>
               </div>
 
               {/* Special instructions */}
               <div>
-                <label className="block text-xs font-bold text-zinc-300 uppercase tracking-wider mb-2">
-                  Special Wash Care Instructions (optional):
+                <label className="block text-xs font-extrabold text-slate-700 uppercase tracking-wider mb-2">
+                  Instruksi Khusus Cuci (Opsional):
                 </label>
                 <textarea
                   value={specialInstructions}
                   onChange={(e) => setSpecialInstructions(e.target.value)}
-                  placeholder="e.g., Hang dry my blue shirts, cold water wash, hypoallergenic soap only, do not iron the wool cardigan."
+                  placeholder="Contoh: Kemeja biru tolong digantung, jangan setrika terlalu panas untuk bahan rajut, gunakan detergen ramah lingkungan."
                   rows={2}
-                  className="w-full bg-zinc-950/60 border border-zinc-800 rounded-lg p-3 text-xs focus:ring-1 focus:ring-sky-500 focus:outline-none text-zinc-200 leading-relaxed"
+                  className="w-full bg-slate-50 border border-slate-200 rounded-lg p-3 text-xs focus:ring-1 focus:ring-blue-500 focus:outline-none text-slate-800 font-semibold leading-relaxed"
                 />
               </div>
 
             </div>
 
             {/* Right panel: Checkout breakdown & submit */}
-            <div className="lg:col-span-5 p-6 bg-zinc-950 flex flex-col justify-between">
+            <div className="lg:col-span-5 p-6 bg-slate-50 flex flex-col justify-between border-t lg:border-t-0 border-slate-200">
               
               {/* Pricing breakdown */}
               <div className="space-y-6">
                 <div>
-                  <h3 className="font-sans font-bold text-sm text-zinc-100 mb-1.5 uppercase tracking-wider">Payment Breakdown</h3>
-                  <p className="text-[10px] text-zinc-500 font-sans leading-none">Complete transparency of fees</p>
+                  <h3 className="font-sans font-extrabold text-sm text-slate-900 mb-1.5 uppercase tracking-wider">Rincian Pembayaran</h3>
+                  <p className="text-[10px] text-slate-500 font-sans leading-none">Kejujuran harga tanpa ada biaya tersembunyi</p>
                 </div>
 
-                <div className="space-y-3 border-t border-zinc-800/80 pt-4 font-mono text-xs text-zinc-400">
+                <div className="space-y-3 border-t border-slate-200 pt-4 font-mono text-xs text-slate-600">
                   <div className="flex justify-between">
-                    <span>Selected Service Care:</span>
-                    <span className="text-zinc-200 text-right max-w-[150px] truncate">{currentService?.name || "Standard Care"}</span>
+                    <span>Layanan Perawatan Terpilih:</span>
+                    <span className="text-slate-800 text-right max-w-[150px] truncate font-bold">{currentService?.name || "Standard Care"}</span>
                   </div>
                   <div className="flex justify-between">
-                    <span>Subtotal:</span>
-                    <span className="text-zinc-200">${subtotal.toFixed(2)}</span>
+                    <span>Subtotal Jasa Laundry:</span>
+                    <span className="text-slate-800 font-bold">${subtotal.toFixed(2)}</span>
                   </div>
                   <div className="flex justify-between">
-                    <span>Driver Distance Courier:</span>
-                    <span className="text-zinc-200">${deliveryFee.toFixed(2)}</span>
+                    <span>Biaya Ongkir Kurir GPS:</span>
+                    <span className="text-slate-800 font-bold">${deliveryFee.toFixed(2)}</span>
                   </div>
                   <div className="flex justify-between">
-                    <span>Washing Machine Gas Fee:</span>
-                    <span className="text-zinc-200">${serviceFee.toFixed(2)}</span>
+                    <span>Biaya Penanganan (SOP):</span>
+                    <span className="text-slate-800 font-bold">${serviceFee.toFixed(2)}</span>
                   </div>
                   <div className="flex justify-between">
-                    <span>Platform Service Levy:</span>
-                    <span className="text-zinc-200">${platformFee.toFixed(2)}</span>
+                    <span>Sewa Platform & Asuransi:</span>
+                    <span className="text-slate-800 font-bold">${platformFee.toFixed(2)}</span>
                   </div>
                   {promoApplied && (
-                    <div className="flex justify-between text-emerald-400 font-bold">
-                      <span>Promo Applied (UBERFRESH):</span>
+                    <div className="flex justify-between text-emerald-600 font-bold">
+                      <span>Promo (UBERFRESH):</span>
                       <span>-${discount.toFixed(2)}</span>
                     </div>
                   )}
 
-                  <div className="flex justify-between font-sans text-sm font-extrabold text-zinc-100 border-t border-zinc-800/80 pt-3">
-                    <span>Total Amount Charged:</span>
-                    <span className="text-sky-400 font-mono">${totalAmount.toFixed(2)}</span>
+                  <div className="flex font-sans text-sm font-extrabold text-slate-950 border-t border-slate-200 pt-3 justify-between items-center">
+                    <span>Total Tagihan Escrow:</span>
+                    <span className="text-blue-600 font-mono text-base">${totalAmount.toFixed(2)}</span>
                   </div>
                 </div>
 
                 {/* Promo Code Input */}
-                <div className="flex gap-2 bg-zinc-900 p-2 border border-zinc-800 rounded-xl">
+                <div className="flex gap-2 bg-white p-2 border border-slate-200 rounded-xl shadow-sm">
                   <input 
                     type="text" 
                     value={promoCode}
                     onChange={(e) => setPromoCode(e.target.value)}
-                    placeholder="Enter UBERFRESH"
-                    className="flex-1 bg-zinc-950 text-xs border border-zinc-800 py-1 px-2 focus:outline-none rounded font-mono uppercase text-zinc-200"
+                    placeholder="Masukkan kupon (UBERFRESH)"
+                    className="flex-1 bg-slate-50 text-xs border border-slate-200 py-1.5 px-2.5 focus:outline-none rounded font-mono uppercase text-slate-800 font-bold"
                   />
                   <button 
                     onClick={handleApplyPromo}
-                    className="bg-zinc-800 hover:bg-zinc-700 text-zinc-300 text-[10px] px-3 rounded font-bold uppercase transition border border-zinc-700"
+                    className="bg-blue-600 hover:bg-blue-700 text-white text-[10px] px-3 rounded-lg font-bold uppercase transition"
                   >
-                    Apply
+                    Terapkan
                   </button>
                 </div>
 
                 {/* Secure Escrow Payment method */}
                 <div className="space-y-2.5">
-                  <label className="block text-[11px] font-bold text-zinc-400 uppercase tracking-wider">
-                    Select Escrow Payment Provider:
+                  <label className="block text-[11px] font-extrabold text-slate-700 uppercase tracking-wider">
+                    Metode Pembayaran Rekening Bersama (Escrow):
                   </label>
                   <div className="grid grid-cols-2 gap-2.5">
-                    <div 
+                    <motion.div 
+                      whileHover={{ scale: 1.02 }}
+                      whileTap={{ scale: 0.98 }}
                       onClick={() => setPaymentMethod("card")}
-                      className={`p-2.5 border rounded-xl text-center cursor-pointer transition ${
+                      className={`p-2.5 border rounded-xl text-center cursor-pointer transition-all duration-150 ${
                         paymentMethod === "card" 
-                          ? "bg-zinc-900 border-sky-500/80" 
-                          : "bg-zinc-950 border-zinc-800"
+                          ? "bg-blue-50 border-blue-500 shadow-sm ring-1 ring-blue-400" 
+                          : "bg-white border-slate-200 hover:border-slate-300 shadow-xs"
                       }`}
                     >
-                      <p className="text-xs font-bold text-zinc-200">💳 Stripe Card</p>
-                    </div>
-                    <div 
+                      <p className="text-xs font-bold text-slate-800">💳 Stripe / Debit</p>
+                    </motion.div>
+                    <motion.div 
+                      whileHover={{ scale: 1.02 }}
+                      whileTap={{ scale: 0.98 }}
                       onClick={() => setPaymentMethod("wallet")}
-                      className={`p-2.5 border rounded-xl text-center cursor-pointer transition ${
+                      className={`p-2.5 border rounded-xl text-center cursor-pointer transition-all duration-150 ${
                         paymentMethod === "wallet" 
-                          ? "bg-zinc-900 border-sky-500/80" 
-                          : "bg-zinc-950 border-zinc-800"
+                          ? "bg-blue-50 border-blue-500 shadow-sm ring-1 ring-blue-400" 
+                          : "bg-white border-slate-200 hover:border-slate-300 shadow-xs"
                       }`}
                     >
-                      <p className="text-xs font-bold text-zinc-200">💰 Hub Wallet</p>
-                      <p className="text-[9px] text-zinc-500 font-mono mt-0.5">Bal: ${currentWalletBalance.toFixed(1)}</p>
-                    </div>
+                      <p className="text-xs font-bold text-slate-800">💰 Dompet CleanUp</p>
+                      <p className="text-[9px] text-slate-500 font-mono mt-0.5">Saldo: ${currentWalletBalance.toFixed(1)}</p>
+                    </motion.div>
                   </div>
                   {paymentMethod === "wallet" && currentWalletBalance < totalAmount && (
-                    <p className="text-[10px] text-rose-400 text-center font-semibold">
-                      ⚠️ Insufficient wallet balance. Deposit via credit card first or switch to Stripe Card.
+                    <p className="text-[10px] text-red-600 text-center font-bold animate-pulse">
+                      ⚠️ Saldo Dompet Anda Kurang. Silakan isi saldo di menu atas atau bayar menggunakan kartu Stripe.
                     </p>
                   )}
                 </div>
               </div>
 
               {/* Submit Trigger */}
-              <div className="mt-8 pt-4 border-t border-zinc-800/80">
-                <button
+              <div className="mt-8 pt-4 border-t border-slate-200">
+                <motion.button
+                  whileHover={(!selectedPartner || (paymentMethod === "wallet" && currentWalletBalance < totalAmount)) ? {} : { scale: 1.015, y: -1 }}
+                  whileTap={(!selectedPartner || (paymentMethod === "wallet" && currentWalletBalance < totalAmount)) ? {} : { scale: 0.985 }}
                   onClick={handlePlaceOrder}
                   disabled={isSubmittingOrder || !selectedPartner || (paymentMethod === "wallet" && currentWalletBalance < totalAmount)}
-                  className="w-full bg-gradient-to-r from-sky-500 to-indigo-600 disabled:from-zinc-800 disabled:to-zinc-800 disabled:opacity-40 disabled:pointer-events-none hover:from-sky-400 hover:to-indigo-500 py-3 text-sm font-extrabold text-white rounded-xl transition shadow-xl shadow-sky-500/10 flex items-center justify-center gap-2"
+                  className="w-full bg-blue-600 disabled:bg-slate-200 disabled:text-slate-400 disabled:shadow-none hover:bg-blue-700 py-3.5 text-sm font-extrabold text-white rounded-xl transition shadow-md shadow-blue-500/15 hover:shadow-lg flex items-center justify-center gap-2 cursor-pointer"
                 >
-                  {isSubmittingOrder ? "Confirming Escrow Deposit..." : "Place Escrow Order & Match Driver"}
-                  <ArrowRight className="w-4 h-4" />
-                </button>
-                <p className="text-[9px] text-zinc-500 text-center mt-2.5 max-w-sm mx-auto leading-relaxed">
-                  Payments are locked safely in escrow and only distributed to partners and drivers upon successful OTP handover completion.
+                  {isSubmittingOrder ? "Memproses Deposit Aman..." : "Pesan Sekarang (Amankan Dana di Rekber)"}
+                  <ArrowRight className="w-4 h-4 animate-bounce-horizontal" />
+                </motion.button>
+                <p className="text-[9px] text-slate-400 text-center mt-2.5 max-w-sm mx-auto leading-relaxed font-semibold">
+                  Dana Anda disimpan dengan aman oleh platform CleanUp dan baru dicairkan ke pihak laundry & kurir setelah serah terima tuntas.
                 </p>
               </div>
 
@@ -1671,34 +1744,34 @@ export default function CustomerPortal({
         </div>
       )}
 
-
       {/* --- TAB 3: ORDER HISTORY & REVIEW --- */}
       {activeTab === "history" && (
         <div className="space-y-6">
           
           {/* Active Review Box if requested */}
           {reviewedOrderId && (
-            <div className="bg-zinc-900 border border-violet-800/40 rounded-2xl p-6 bg-gradient-to-r from-zinc-900 to-violet-950/20 shadow-xl">
-              <h3 className="font-sans font-extrabold text-sm text-zinc-100 flex items-center gap-2">
-                <Star className="w-5 h-5 text-amber-400 animate-spin" />
-                Submit Feedback for Completed Order {orders.find(o => o.id === reviewedOrderId)?.orderNumber}
+            <div className="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm">
+              <h3 className="font-sans font-extrabold text-sm text-slate-900 flex items-center gap-2">
+                <Star className="w-5 h-5 text-yellow-500 animate-spin" />
+                Kirim Ulasan untuk Pesanan {orders.find(o => o.id === reviewedOrderId)?.orderNumber}
               </h3>
-              <p className="text-xs text-zinc-400 mt-1">Reviewing the washing quality of the Laundry Partner workshop.</p>
+              <p className="text-xs text-slate-500 mt-1">Berikan penilaian Anda terhadap kualitas cucian, pewangi, dan kebersihan pakaian.</p>
 
               <div className="mt-4 space-y-4">
                 <div>
-                  <label className="block text-[11px] font-bold text-zinc-400 uppercase tracking-wider mb-2">
-                    Rating (1 to 5 Stars):
+                  <label className="block text-[11px] font-extrabold text-slate-700 uppercase tracking-wider mb-2">
+                    Skor Rating (1 sampai 5 Bintang):
                   </label>
                   <div className="flex gap-2">
                     {[1, 2, 3, 4, 5].map((star) => (
                       <button
                         key={star}
+                        type="button"
                         onClick={() => setReviewRating(star)}
                         className={`w-9 h-9 rounded-lg text-sm font-extrabold flex items-center justify-center border transition ${
                           reviewRating >= star 
-                            ? "bg-amber-500 text-zinc-950 border-amber-600" 
-                            : "bg-zinc-950 text-zinc-500 border-zinc-800"
+                            ? "bg-yellow-500 text-white border-yellow-600" 
+                            : "bg-white text-slate-400 border-slate-200 hover:bg-slate-50"
                         }`}
                       >
                         {star} ★
@@ -1708,15 +1781,15 @@ export default function CustomerPortal({
                 </div>
 
                 <div>
-                  <label className="block text-[11px] font-bold text-zinc-400 uppercase tracking-wider mb-1.5">
-                    Comments:
+                  <label className="block text-[11px] font-extrabold text-slate-700 uppercase tracking-wider mb-1.5">
+                    Komentar Ulasan:
                   </label>
                   <textarea
                     value={reviewComment}
                     onChange={(e) => setReviewComment(e.target.value)}
-                    placeholder="Washing smelled great, folding was pristine. Fast pickup."
+                    placeholder="Contoh: Wangi sekali, lipatan rapi, kurirnya juga ramah dan on-time."
                     rows={2.5}
-                    className="w-full bg-zinc-950 border border-zinc-800 rounded-xl p-3 text-xs text-zinc-200 focus:ring-1 focus:ring-sky-500"
+                    className="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 text-xs text-slate-800 focus:ring-1 focus:ring-blue-500 focus:outline-none font-semibold"
                   />
                 </div>
 
@@ -1724,15 +1797,15 @@ export default function CustomerPortal({
                   <button
                     onClick={handleSubmitReview}
                     disabled={isSubmittingReview}
-                    className="px-5 py-2 bg-sky-600 hover:bg-sky-500 text-white rounded-xl text-xs font-bold transition shadow-lg shadow-sky-600/10"
+                    className="px-5 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-xs font-bold transition shadow-sm"
                   >
-                    {isSubmittingReview ? "Submitting..." : "Post Review"}
+                    {isSubmittingReview ? "Mengirim..." : "Kirim Ulasan"}
                   </button>
                   <button
                     onClick={() => setReviewedOrderId(null)}
-                    className="px-5 py-2 bg-zinc-800 hover:bg-zinc-700 text-zinc-300 rounded-xl text-xs border border-zinc-700"
+                    className="px-5 py-2 bg-white hover:bg-slate-50 text-slate-600 rounded-xl text-xs border border-slate-200 font-bold"
                   >
-                    Cancel
+                    Batal
                   </button>
                 </div>
               </div>
@@ -1741,40 +1814,40 @@ export default function CustomerPortal({
 
           {/* Active Dispute Box if requested */}
           {disputedOrderId && (
-            <div className="bg-zinc-900 border border-rose-800/40 rounded-2xl p-6 bg-gradient-to-r from-zinc-900 to-rose-950/20 shadow-xl">
-              <h3 className="font-sans font-extrabold text-sm text-zinc-100 flex items-center gap-2">
-                <AlertTriangle className="w-5 h-5 text-rose-400" />
-                Raise Dispute Ticket for Order {orders.find(o => o.id === disputedOrderId)?.orderNumber}
+            <div className="bg-white border border-red-200 rounded-2xl p-6 shadow-sm">
+              <h3 className="font-sans font-extrabold text-sm text-red-950 flex items-center gap-2">
+                <AlertTriangle className="w-5 h-5 text-red-600" />
+                Laporkan Masalah / Ajukan Klaim Tiket untuk Pesanan {orders.find(o => o.id === disputedOrderId)?.orderNumber}
               </h3>
-              <p className="text-xs text-zinc-400 mt-1">Our customer experience super admins will audit processing cycles immediately.</p>
+              <p className="text-xs text-slate-500 mt-1">Platform Admin kami akan segera melakukan investigasi dan mencocokkan dengan rekaman video penimbangan baju.</p>
 
               <div className="mt-4 space-y-4">
                 <div>
-                  <label className="block text-[11px] font-bold text-zinc-400 uppercase tracking-wider mb-1.5">
-                    Dispute Category:
+                  <label className="block text-[11px] font-extrabold text-slate-700 uppercase tracking-wider mb-1.5">
+                    Kategori Masalah:
                   </label>
                   <select
                     value={disputeType}
                     onChange={(e: any) => setDisputeType(e.target.value)}
-                    className="bg-zinc-950 border border-zinc-800 rounded-lg p-2 text-xs text-zinc-200"
+                    className="bg-slate-50 border border-slate-200 rounded-lg p-2 text-xs text-slate-800 font-bold focus:outline-none focus:ring-1 focus:ring-blue-500"
                   >
-                    <option value="damage">Fabric / Garment Damage</option>
-                    <option value="lost_item">Missing Clothes Item</option>
-                    <option value="wrong_order">Wrong Laundry Delivery</option>
-                    <option value="other">Other Inconvenience</option>
+                    <option value="damage">Kerusakan Kain / Robek</option>
+                    <option value="lost_item">Baju Hilang / Kurang Item</option>
+                    <option value="wrong_order">Tertukar dengan Laundry Lain</option>
+                    <option value="other">Keluhan Lainnya</option>
                   </select>
                 </div>
 
                 <div>
-                  <label className="block text-[11px] font-bold text-zinc-400 uppercase tracking-wider mb-1.5">
-                    Describe Incident:
+                  <label className="block text-[11px] font-extrabold text-slate-700 uppercase tracking-wider mb-1.5">
+                    Deskripsi Kejadian Secara Detail:
                   </label>
                   <textarea
                     value={disputeDescription}
                     onChange={(e) => setDisputeDescription(e.target.value)}
-                    placeholder="Washing workshop lost my wool sock or damaged the seam."
+                    placeholder="Contoh: Satu kaos polo warna merah tidak ada di kantong saat pengantaran."
                     rows={2.5}
-                    className="w-full bg-zinc-950 border border-zinc-800 rounded-xl p-3 text-xs text-zinc-200 focus:ring-1 focus:ring-sky-500"
+                    className="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 text-xs text-slate-800 focus:ring-1 focus:ring-blue-500 focus:outline-none font-semibold"
                   />
                 </div>
 
@@ -1782,15 +1855,15 @@ export default function CustomerPortal({
                   <button
                     onClick={handleSubmitDispute}
                     disabled={isSubmittingDispute}
-                    className="px-5 py-2 bg-rose-600 hover:bg-rose-500 text-white rounded-xl text-xs font-bold transition shadow-lg shadow-rose-600/10"
+                    className="px-5 py-2 bg-red-600 hover:bg-red-700 text-white rounded-xl text-xs font-bold transition shadow-sm"
                   >
-                    {isSubmittingDispute ? "Filing Incident..." : "Submit Dispute Ticket"}
+                    {isSubmittingDispute ? "Mengirim Pengaduan..." : "Kirim Pengaduan Sekarang"}
                   </button>
                   <button
                     onClick={() => setDisputedOrderId(null)}
-                    className="px-5 py-2 bg-zinc-800 hover:bg-zinc-700 text-zinc-300 rounded-xl text-xs border border-zinc-700"
+                    className="px-5 py-2 bg-white hover:bg-slate-50 text-slate-600 rounded-xl text-xs border border-slate-200 font-bold"
                   >
-                    Cancel
+                    Batal
                   </button>
                 </div>
               </div>
@@ -1798,51 +1871,51 @@ export default function CustomerPortal({
           )}
 
           {/* Ledger & History Tables */}
-          <div className="bg-zinc-900/90 border border-zinc-800 rounded-2xl p-5 shadow-lg">
+          <div className="bg-white border border-slate-200 rounded-2xl p-5 shadow-sm">
             <div className="flex items-center justify-between mb-4">
-              <h3 className="font-sans font-bold text-sm text-zinc-100 flex items-center gap-2">
-                <FileText className="w-4 h-4 text-emerald-400" />
-                Garment History Log
+              <h3 className="font-sans font-extrabold text-sm text-slate-950 flex items-center gap-2">
+                <FileText className="w-4 h-4 text-blue-600" />
+                Riwayat Transaksi Laundry CleanUp
               </h3>
-              <span className="text-[10px] font-mono bg-zinc-950 text-zinc-400 border border-zinc-800 px-2 py-0.5 rounded">
-                SECURE TRANSACTION RECORD
+              <span className="text-[10px] font-mono bg-blue-50 text-blue-700 border border-blue-150 px-2.5 py-1 rounded-lg font-bold">
+                PLATFORM SECURE LEDGER
               </span>
             </div>
 
             <div className="overflow-x-auto">
               <table className="w-full text-left border-collapse text-xs">
                 <thead>
-                  <tr className="border-b border-zinc-800 text-zinc-500 uppercase tracking-wider text-[10px] font-mono">
-                    <th className="py-3 px-2">Order No.</th>
-                    <th className="py-3 px-2">Partner Workshop</th>
-                    <th className="py-3 px-2">Care Service</th>
-                    <th className="py-3 px-2">Load details</th>
-                    <th className="py-3 px-2 text-right">Price Charged</th>
+                  <tr className="border-b border-slate-100 text-slate-400 uppercase tracking-wider text-[10px] font-mono font-bold">
+                    <th className="py-3 px-2">No. Pesanan</th>
+                    <th className="py-3 px-2">Mitra Laundry</th>
+                    <th className="py-3 px-2">Kategori Jasa</th>
+                    <th className="py-3 px-2">Rincian Muatan</th>
+                    <th className="py-3 px-2 text-right">Biaya Terbayar</th>
                     <th className="py-3 px-2 text-center">Status</th>
-                    <th className="py-3 px-2 text-center">Actions</th>
+                    <th className="py-3 px-2 text-center">Tindakan</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-zinc-800/50">
+                <tbody className="divide-y divide-slate-100">
                   {orders.filter(o => o.customerId === "cust-1").map((o) => {
                     const p = partners.find(pt => pt.id === o.partnerId);
                     return (
-                      <tr key={o.id} className="hover:bg-zinc-950/40 text-zinc-300">
-                        <td className="py-3 px-2 font-mono font-bold text-zinc-200">{o.orderNumber}</td>
-                        <td className="py-3 px-2 font-semibold text-zinc-200">{p?.businessName || "Unknown"}</td>
-                        <td className="py-3 px-2 capitalize">{o.serviceType.replace(/_/g, ' ')}</td>
-                        <td className="py-3 px-2 font-mono text-[11px]">
+                      <tr key={o.id} className="hover:bg-slate-50/50 text-slate-600">
+                        <td className="py-3 px-2 font-mono font-bold text-slate-900">{o.orderNumber}</td>
+                        <td className="py-3 px-2 font-bold text-slate-900">{p?.businessName || "Unknown"}</td>
+                        <td className="py-3 px-2 capitalize font-semibold">{o.serviceType.replace(/_/g, ' ')}</td>
+                        <td className="py-3 px-2 font-mono text-[11px] font-semibold">
                           {o.weightKg} Kg / {o.itemCount} Garments
                         </td>
-                        <td className="py-3 px-2 text-right font-mono font-bold text-sky-400">
+                        <td className="py-3 px-2 text-right font-mono font-bold text-blue-600">
                           ${o.totalAmount.toFixed(2)}
                         </td>
                         <td className="py-3 px-2 text-center">
-                          <span className={`px-2 py-0.5 rounded text-[10px] font-mono uppercase font-semibold ${
+                          <span className={`px-2.5 py-1 rounded-full text-[10px] font-mono uppercase font-bold border ${
                             o.status === "completed" 
-                              ? "bg-emerald-950/50 text-emerald-300 border border-emerald-900/40" 
+                              ? "bg-emerald-50 text-emerald-700 border-emerald-200" 
                               : o.status === "cancelled" 
-                              ? "bg-rose-950/50 text-rose-300 border border-rose-900/40" 
-                              : "bg-sky-950/50 text-sky-300 border border-sky-900/40 animate-pulse"
+                              ? "bg-red-50 text-red-700 border-red-200" 
+                              : "bg-blue-50 text-blue-700 border-blue-200 animate-pulse"
                           }`}>
                             {o.status.replace(/_/g, ' ')}
                           </span>
@@ -1854,9 +1927,9 @@ export default function CustomerPortal({
                                 setTrackingOrderId(o.id);
                                 setActiveTab("home");
                               }}
-                              className="px-2 py-1 bg-zinc-800 hover:bg-zinc-700 text-zinc-200 border border-zinc-700 rounded text-[10px] font-bold"
+                              className="px-2.5 py-1 bg-blue-600 hover:bg-blue-700 text-white rounded text-[10px] font-bold cursor-pointer transition shadow-sm"
                             >
-                              Track
+                              Lacak
                             </button>
                             {o.status === "completed" && (
                               <>
@@ -1865,20 +1938,20 @@ export default function CustomerPortal({
                                     setReviewedOrderId(o.id);
                                     setDisputedOrderId(null);
                                   }}
-                                  className="px-2 py-1 bg-zinc-800 hover:bg-zinc-700 text-amber-400 border border-zinc-700 rounded text-[10px] font-bold"
-                                  title="Write Partner Review"
+                                  className="px-2.5 py-1 bg-yellow-500 hover:bg-yellow-600 text-white rounded text-[10px] font-bold cursor-pointer transition shadow-sm"
+                                  title="Tulis Ulasan Toko"
                                 >
-                                  Review
+                                  Ulas
                                 </button>
                                 <button
                                   onClick={() => {
                                     setDisputedOrderId(o.id);
                                     setReviewedOrderId(null);
                                   }}
-                                  className="px-2 py-1 bg-zinc-800 hover:bg-zinc-700 text-rose-400 border border-zinc-700 rounded text-[10px] font-bold"
-                                  title="Report Damage/Incident"
+                                  className="px-2.5 py-1 bg-red-600 hover:bg-red-700 text-white rounded text-[10px] font-bold cursor-pointer transition shadow-sm"
+                                  title="Laporkan Masalah"
                                 >
-                                  Dispute
+                                  Komplain
                                 </button>
                               </>
                             )}
@@ -1889,7 +1962,7 @@ export default function CustomerPortal({
                   })}
                   {orders.filter(o => o.customerId === "cust-1").length === 0 && (
                     <tr>
-                      <td colSpan={7} className="text-center py-6 text-zinc-500 italic">No orders logged in database yet.</td>
+                      <td colSpan={7} className="text-center py-6 text-slate-400 italic font-medium">Belum ada riwayat pesanan yang terdaftar di sistem.</td>
                     </tr>
                   )}
                 </tbody>

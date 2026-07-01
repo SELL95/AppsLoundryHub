@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { motion } from "motion/react";
 import { 
   Store, 
   Layers, 
@@ -460,13 +461,15 @@ export default function PartnerPortal({
               </p>
             </div>
 
-            <button
+            <motion.button
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
               onClick={handleSaveCapacity}
               disabled={isUpdatingCapacity}
-              className="w-full py-1.5 bg-zinc-800 hover:bg-zinc-750 text-zinc-300 text-xs font-bold border border-zinc-700 rounded-xl transition"
+              className="w-full py-2 bg-slate-900 hover:bg-slate-950 text-white text-xs font-bold border border-slate-800 rounded-xl cursor-pointer shadow-md transition-all duration-150"
             >
               {isUpdatingCapacity ? "Updating limits..." : "Save limits"}
-            </button>
+            </motion.button>
           </div>
 
           {/* Service catalog catalog list & Creator */}

@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { motion } from "motion/react";
 import { 
   Truck, 
   MapPin, 
@@ -254,60 +255,60 @@ export default function DriverPortal({
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
         
         {/* Toggle Online offline */}
-        <div className="bg-zinc-900 border border-zinc-800 rounded-2xl p-5 flex flex-col justify-between">
+        <div className="bg-white border border-slate-200 rounded-2xl p-5 flex flex-col justify-between shadow-sm">
           <div>
-            <p className="text-xs text-zinc-400">Driver Console State</p>
-            <h3 className="font-sans font-bold text-sm text-zinc-200 mt-1">
-              Duty Status: <span className={isOnline ? "text-emerald-400 font-extrabold" : "text-rose-400 font-extrabold"}>
-                {isOnline ? "ONLINE (RECEIVING DISPATCHES)" : "OFFLINE"}
+            <p className="text-xs text-slate-400 font-bold uppercase tracking-wider">Status Kurir CleanUp</p>
+            <h3 className="font-sans font-bold text-sm text-slate-800 mt-1">
+              Duty Status: <span className={isOnline ? "text-blue-600 font-extrabold" : "text-red-500 font-extrabold"}>
+                {isOnline ? "AKTIF (SIAP MENERIMA ORDER)" : "NONAKTIF (OFFLINE)"}
               </span>
             </h3>
           </div>
           <div className="mt-4 flex items-center gap-3">
             <button
               onClick={() => handleToggleOnline(true)}
-              className={`flex-1 py-2 text-xs font-bold rounded-xl border transition ${
+              className={`flex-1 py-2 text-xs font-bold rounded-xl border transition cursor-pointer ${
                 isOnline 
-                  ? "bg-emerald-950/40 border-emerald-500 text-emerald-300" 
-                  : "bg-zinc-950 border-zinc-800 text-zinc-500 hover:text-zinc-300"
+                  ? "bg-blue-600 border-blue-600 text-white shadow-sm" 
+                  : "bg-white border-slate-200 text-slate-500 hover:text-slate-800"
               }`}
             >
-              Go Online
+              Aktifkan GPS
             </button>
             <button
               onClick={() => handleToggleOnline(false)}
-              className={`flex-1 py-2 text-xs font-bold rounded-xl border transition ${
+              className={`flex-1 py-2 text-xs font-bold rounded-xl border transition cursor-pointer ${
                 !isOnline 
-                  ? "bg-rose-950/40 border-rose-500 text-rose-300" 
-                  : "bg-zinc-950 border-zinc-800 text-zinc-500 hover:text-zinc-300"
+                  ? "bg-red-50 border-red-200 text-red-600 shadow-sm" 
+                  : "bg-white border-slate-200 text-slate-500 hover:text-slate-800"
               }`}
             >
-              Go Offline
+              Offline
             </button>
           </div>
         </div>
 
         {/* Total Earnings */}
-        <div className="bg-zinc-900 border border-zinc-800 rounded-2xl p-5 flex items-center justify-between">
+        <div className="bg-white border border-slate-200 rounded-2xl p-5 flex items-center justify-between shadow-sm">
           <div>
-            <p className="text-xs text-zinc-400">Escrow Payout Ledger</p>
-            <p className="text-3xl font-extrabold font-mono text-zinc-100 mt-1">${mockWalletBalance.toFixed(2)}</p>
-            <p className="text-[10px] text-zinc-500 mt-1">Includes gas allowances & base fare allocations</p>
+            <p className="text-xs text-slate-400 font-bold uppercase tracking-wider">Pendapatan Terkumpul</p>
+            <p className="text-3xl font-extrabold font-mono text-slate-900 mt-1">${mockWalletBalance.toFixed(2)}</p>
+            <p className="text-[10px] text-slate-500 mt-1 font-medium">Sudah termasuk bonus bensin & komisi flat rate</p>
           </div>
-          <div className="bg-sky-500/10 w-12 h-12 rounded-xl flex items-center justify-center border border-sky-500/15">
-            <DollarSign className="w-6 h-6 text-sky-400" />
+          <div className="bg-blue-50 w-12 h-12 rounded-xl flex items-center justify-center border border-blue-100">
+            <DollarSign className="w-6 h-6 text-blue-600" />
           </div>
         </div>
 
         {/* Trips Summary */}
-        <div className="bg-zinc-900 border border-zinc-800 rounded-2xl p-5 flex items-center justify-between">
+        <div className="bg-white border border-slate-200 rounded-2xl p-5 flex items-center justify-between shadow-sm">
           <div>
-            <p className="text-xs text-zinc-400">Total Completed Trips</p>
-            <p className="text-3xl font-extrabold font-mono text-zinc-100 mt-1">{driverProfile.totalDeliveries + myCompletedTrips.length}</p>
-            <p className="text-[10px] text-zinc-500 mt-1">Average rating across platform: ★ {driverProfile.ratingAvg}</p>
+            <p className="text-xs text-slate-400 font-bold uppercase tracking-wider">Total Trip Selesai</p>
+            <p className="text-3xl font-extrabold font-mono text-slate-900 mt-1">{driverProfile.totalDeliveries + myCompletedTrips.length}</p>
+            <p className="text-[10px] text-slate-500 mt-1 font-medium">Rata-rata rating performa: <span className="text-yellow-600 font-bold">★ {driverProfile.ratingAvg}</span></p>
           </div>
-          <div className="bg-emerald-500/10 w-12 h-12 rounded-xl flex items-center justify-center border border-emerald-500/15">
-            <Truck className="w-6 h-6 text-emerald-400" />
+          <div className="bg-yellow-50 w-12 h-12 rounded-xl flex items-center justify-center border border-yellow-100">
+            <Truck className="w-6 h-6 text-yellow-600" />
           </div>
         </div>
       </div>
@@ -317,47 +318,46 @@ export default function DriverPortal({
         {/* Left column: Active job or Pending Dispatch matchboard */}
         <div className="lg:col-span-8 space-y-6">
           {isOnline ? (
-            activeJob ? (
-              /* Active Job HUD Card */
-              <div className="bg-zinc-900 border border-zinc-800 rounded-2xl p-6 shadow-xl space-y-6">
-                <div className="flex items-center justify-between border-b border-zinc-800 pb-4">
+            activeJob ? (               /* Active Job HUD Card */
+              <div className="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm space-y-6">
+                <div className="flex items-center justify-between border-b border-slate-100 pb-4">
                   <div>
-                    <span className="text-[9px] font-mono tracking-widest bg-sky-950 text-sky-300 border border-sky-800/40 px-2 py-0.5 rounded uppercase">
+                    <span className="text-[9px] font-mono tracking-widest bg-blue-50 text-blue-600 border border-blue-200 px-2.5 py-1 rounded-full uppercase font-bold">
                       KONTRAK AKTIF BERJALAN
                     </span>
-                    <h3 className="font-sans font-bold text-sm text-zinc-200 mt-1">
+                    <h3 className="font-sans font-extrabold text-sm text-slate-800 mt-1.5">
                       Pesanan #{activeJob.orderNumber} ({activeJob.status.replace(/_/g, ' ')})
                     </h3>
                   </div>
                   <div className="text-right">
-                    <p className="text-[10px] text-zinc-500 uppercase font-mono">Ongkos Kirim</p>
-                    <p className="text-xs font-mono font-bold text-emerald-400">+${activeJob.deliveryFee.toFixed(2)}</p>
+                    <p className="text-[10px] text-slate-400 uppercase font-mono font-bold">Ongkos Kirim</p>
+                    <p className="text-sm font-mono font-extrabold text-blue-600">+${activeJob.deliveryFee.toFixed(2)}</p>
                   </div>
                 </div>
 
                 {/* Algoritma Rute Navigasi Stepper */}
                 <div className="space-y-4">
-                  <p className="text-xs font-bold text-zinc-300 flex items-center gap-1.5 uppercase tracking-wider">
-                    <Compass className="w-4 h-4 text-sky-400 animate-spin" />
+                  <p className="text-xs font-extrabold text-slate-700 flex items-center gap-1.5 uppercase tracking-wider">
+                    <Compass className="w-4 h-4 text-blue-600 animate-spin" />
                     Progres Alur Rute Pengantaran (GPS Algoritma)
                   </p>
 
                   {/* Horizontal Stepper Timeline */}
-                  <div className="grid grid-cols-4 gap-2 text-center text-[10px] bg-zinc-950 p-2.5 border border-zinc-850 rounded-2xl">
+                  <div className="grid grid-cols-4 gap-2 text-center text-[10px] bg-slate-50 p-2.5 border border-slate-200 rounded-2xl">
                     <div className={`p-1.5 rounded-xl border transition ${
                       driverSubStep === "route_to_laundry" 
-                        ? "border-sky-500 bg-sky-500/10 text-sky-400 font-bold" 
-                        : "border-emerald-950 bg-emerald-950/5 text-emerald-500"
+                        ? "border-blue-500 bg-blue-100/40 text-blue-700 font-extrabold" 
+                        : "border-emerald-200 bg-emerald-50 text-emerald-700 font-bold"
                     }`}>
                       <p>1. Ke Laundry</p>
                       <p className="text-[9px] mt-0.5 opacity-80">{driverSubStep === "route_to_laundry" ? "Aktif" : "Selesai"}</p>
                     </div>
                     <div className={`p-1.5 rounded-xl border transition ${
                       driverSubStep === "take_photo" 
-                        ? "border-sky-500 bg-sky-500/10 text-sky-400 font-bold animate-pulse" 
+                        ? "border-blue-500 bg-blue-100/40 text-blue-700 font-extrabold" 
                         : driverSubStep === "route_to_recipient" 
-                        ? "border-emerald-950 bg-emerald-950/5 text-emerald-500" 
-                        : "border-zinc-850 text-zinc-500"
+                        ? "border-emerald-200 bg-emerald-50 text-emerald-700 font-bold" 
+                        : "border-slate-250 text-slate-400"
                     }`}>
                       <p>2. Ambil Foto</p>
                       <p className="text-[9px] mt-0.5 opacity-80">
@@ -366,10 +366,10 @@ export default function DriverPortal({
                     </div>
                     <div className={`p-1.5 rounded-xl border transition ${
                       driverSubStep === "route_to_recipient" && activeJob.status !== "delivered"
-                        ? "border-sky-500 bg-sky-500/10 text-sky-400 font-bold" 
+                        ? "border-blue-500 bg-blue-100/40 text-blue-700 font-extrabold" 
                         : activeJob.status === "delivered"
-                        ? "border-emerald-950 bg-emerald-950/5 text-emerald-500"
-                        : "border-zinc-850 text-zinc-500"
+                        ? "border-emerald-200 bg-emerald-50 text-emerald-700 font-bold"
+                        : "border-slate-250 text-slate-400"
                     }`}>
                       <p>3. Ke Penerima</p>
                       <p className="text-[9px] mt-0.5 opacity-80">
@@ -378,16 +378,16 @@ export default function DriverPortal({
                     </div>
                     <div className={`p-1.5 rounded-xl border transition ${
                       activeJob.status === "delivered" 
-                        ? "border-emerald-500 bg-emerald-500/10 text-emerald-400 font-bold animate-pulse" 
-                        : "border-zinc-850 text-zinc-500"
+                        ? "border-yellow-500 bg-yellow-50 text-yellow-700 font-extrabold animate-pulse" 
+                        : "border-slate-250 text-slate-400"
                     }`}>
-                      <p>4. Input OTP</p>
+                      <p>4. Foto Serah Terima</p>
                       <p className="text-[9px] mt-0.5 opacity-80">{activeJob.status === "delivered" ? "Aktif" : "Menunggu"}</p>
                     </div>
                   </div>
 
                   {/* Real-time Interactive Satellite Map HUD */}
-                  <div className="h-[260px] w-full bg-zinc-950 rounded-2xl overflow-hidden border border-zinc-850/80">
+                  <div className="h-[260px] w-full bg-slate-100 rounded-2xl overflow-hidden border border-slate-200">
                     <InteractiveMap
                       mode="tracking"
                       customerLat={activeJob.pickupLat}
@@ -396,24 +396,25 @@ export default function DriverPortal({
                       trackingOrder={activeJob}
                     />
                   </div>
+                </div>
 
-                  {/* Dynamic Interactive GPS Map Box */}
-                  <div className="bg-zinc-950 p-5 rounded-2xl border border-zinc-800 space-y-4">
+                {/* Dynamic Interactive GPS Map Box */}
+                  <div className="bg-slate-50 p-5 rounded-2xl border border-slate-200 space-y-4">
                     
                     {/* LANGKAH 1: NAVIGASI KE LAUNDRY */}
                     {driverSubStep === "route_to_laundry" && activeJob.status !== "delivered" && (
                       <div className="space-y-4">
                         <div className="flex items-start gap-3">
-                          <div className="p-2.5 bg-sky-500/10 text-sky-400 rounded-xl border border-sky-500/15">
+                          <div className="p-2.5 bg-blue-50 text-blue-600 rounded-xl border border-blue-100">
                             <Navigation className="w-5 h-5 animate-pulse" />
                           </div>
                           <div>
-                            <p className="text-xs font-bold text-zinc-200">LANGKAH 1: Ambil Barang di Workshop Laundry</p>
-                            <p className="text-[11px] text-zinc-400 mt-1">
+                            <p className="text-xs font-bold text-slate-800">LANGKAH 1: Ambil Barang di Workshop Laundry</p>
+                            <p className="text-[11px] text-slate-500 mt-1 font-medium">
                               Silakan menuju ke lokasi mitra laundry <strong>{partners.find(p => p.id === activeJob.partnerId)?.businessName || "Laundry Partner"}</strong> untuk mengambil pakaian.
                             </p>
-                            <div className="bg-zinc-900 border border-zinc-850 p-3 rounded-xl mt-2 text-[11px] text-zinc-400 space-y-1">
-                              <p className="font-semibold text-zinc-300">Alamat Workshop:</p>
+                            <div className="bg-white border border-slate-200 p-3 rounded-xl mt-2 text-[11px] text-slate-600 space-y-1 font-semibold">
+                              <p className="font-extrabold text-slate-800">Alamat Workshop:</p>
                               <p>{partners.find(p => p.id === activeJob.partnerId)?.businessAddress || "Jl. Senopati No. 45, Jakarta"}</p>
                             </div>
                           </div>
@@ -424,13 +425,13 @@ export default function DriverPortal({
                             href={`https://www.google.com/maps/dir/?api=1&destination=${partners.find(p => p.id === activeJob.partnerId)?.businessLat || -6.2240},${partners.find(p => p.id === activeJob.partnerId)?.businessLng || 106.8090}`}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="flex-1 py-2.5 bg-sky-600 hover:bg-sky-500 text-white rounded-xl text-xs font-bold text-center flex items-center justify-center gap-2 transition shadow-lg shadow-sky-600/10"
+                            className="flex-1 py-2.5 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-xs font-bold text-center flex items-center justify-center gap-2 transition shadow-sm cursor-pointer"
                           >
                             🗺️ Buka Google Maps (Rute Laundry) ➔
                           </a>
                           <button
                             onClick={() => updateSubStep("take_photo")}
-                            className="flex-1 py-2.5 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl text-xs font-bold transition shadow-lg shadow-emerald-600/10"
+                            className="flex-1 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs font-bold transition shadow-sm cursor-pointer"
                           >
                             📍 Saya Sudah Tiba di Laundry
                           </button>
@@ -442,27 +443,27 @@ export default function DriverPortal({
                     {driverSubStep === "take_photo" && activeJob.status !== "delivered" && (
                       <div className="space-y-4">
                         <div className="flex items-start gap-3">
-                          <div className="p-2.5 bg-indigo-500/10 text-indigo-400 rounded-xl border border-indigo-500/15">
+                          <div className="p-2.5 bg-indigo-50 text-indigo-600 rounded-xl border border-indigo-100">
                             <Camera className="w-5 h-5 animate-bounce" />
                           </div>
                           <div className="flex-1">
-                            <p className="text-xs font-bold text-zinc-200">LANGKAH 2: Ambil Foto Bukti Pengambilan Barang</p>
-                            <p className="text-[11px] text-zinc-400 mt-1">
+                            <p className="text-xs font-bold text-slate-800">LANGKAH 2: Ambil Foto Bukti Pengambilan Barang</p>
+                            <p className="text-[11px] text-slate-500 mt-1 font-medium">
                               Harap ambil foto kantong laundry di workshop mitra untuk verifikasi keamanan pengiriman.
                             </p>
                           </div>
                         </div>
 
                         {/* Modul Kamera Simulasi */}
-                        <div className="border border-zinc-800 bg-zinc-900 rounded-2xl p-4 flex flex-col items-center justify-center text-center gap-3">
+                        <div className="border border-slate-200 bg-white rounded-2xl p-4 flex flex-col items-center justify-center text-center gap-3">
                           {pickupPhoto ? (
                             <div className="space-y-3 w-full">
                               <img 
                                 src={pickupPhoto} 
                                 alt="Pickup bukti" 
-                                className="w-full max-h-48 object-cover rounded-xl border border-zinc-700 shadow-md"
+                                className="w-full max-h-48 object-cover rounded-xl border border-slate-200 shadow-sm"
                               />
-                              <p className="text-[10px] text-emerald-400 font-bold flex items-center justify-center gap-1">
+                              <p className="text-[10px] text-emerald-600 font-extrabold flex items-center justify-center gap-1">
                                 ✓ Foto Berhasil Diambil & Disimpan!
                               </p>
                               <button
@@ -473,17 +474,17 @@ export default function DriverPortal({
                                     setIsCapturingPhoto(false);
                                   }, 700);
                                 }}
-                                className="px-3 py-1 bg-zinc-800 hover:bg-zinc-700 text-zinc-300 rounded-lg text-[10px] font-bold transition"
+                                className="px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg text-[10px] font-bold transition cursor-pointer"
                               >
                                 Ambil Ulang Foto
                               </button>
                             </div>
                           ) : (
                             <div className="py-6 space-y-3 w-full">
-                              <div className="w-12 h-12 rounded-full bg-zinc-800 border border-zinc-750 flex items-center justify-center mx-auto text-zinc-400">
+                              <div className="w-12 h-12 rounded-full bg-slate-50 border border-slate-200 flex items-center justify-center mx-auto text-slate-400">
                                 <Camera className="w-6 h-6" />
                               </div>
-                              <p className="text-[11px] text-zinc-500 max-w-xs mx-auto">
+                              <p className="text-[11px] text-slate-400 max-w-xs mx-auto font-medium">
                                 Ketuk tombol di bawah untuk menggunakan kamera ponsel Anda atau simulasi tangkapan foto.
                               </p>
                               <button
@@ -495,7 +496,7 @@ export default function DriverPortal({
                                   }, 800);
                                 }}
                                 disabled={isCapturingPhoto}
-                                className="px-4 py-2 bg-indigo-600 hover:bg-indigo-500 disabled:opacity-50 text-white rounded-xl text-xs font-bold transition shadow-lg shadow-indigo-600/10 flex items-center gap-1.5 mx-auto"
+                                className="px-4 py-2 bg-blue-600 hover:bg-blue-700 disabled:opacity-50 text-white rounded-xl text-xs font-bold transition shadow-sm flex items-center gap-1.5 mx-auto cursor-pointer"
                               >
                                 {isCapturingPhoto ? (
                                   <>
@@ -513,18 +514,17 @@ export default function DriverPortal({
                         <div className="flex gap-2">
                           <button
                             onClick={() => updateSubStep("route_to_laundry")}
-                            className="py-2 px-3 border border-zinc-850 hover:bg-zinc-900 text-zinc-400 rounded-xl text-xs font-bold transition"
+                            className="py-2 px-3 border border-slate-200 hover:bg-slate-50 text-slate-500 rounded-xl text-xs font-bold transition cursor-pointer"
                           >
                             ⬅ Kembali
                           </button>
                           <button
                             disabled={!pickupPhoto}
                             onClick={async () => {
-                              // Update order status on server to delivery_in_progress
                               await handleUpdateStatus("delivery_in_progress", "Kurir telah mengonfirmasi pengambilan pakaian dari workshop mitra dan sedang dalam rute navigasi menuju alamat penerima.");
                               updateSubStep("route_to_recipient");
                             }}
-                            className="flex-1 py-2.5 bg-emerald-600 hover:bg-emerald-500 disabled:opacity-50 text-white rounded-xl text-xs font-bold transition shadow-lg shadow-emerald-600/10"
+                            className="flex-1 py-2.5 bg-emerald-600 hover:bg-emerald-700 disabled:opacity-50 text-white rounded-xl text-xs font-bold transition shadow-sm cursor-pointer"
                           >
                             ✓ Konfirmasi & Mulai Rute Pengantaran
                           </button>
@@ -536,18 +536,18 @@ export default function DriverPortal({
                     {driverSubStep === "route_to_recipient" && activeJob.status !== "delivered" && (
                       <div className="space-y-4">
                         <div className="flex items-start gap-3">
-                          <div className="p-2.5 bg-violet-500/10 text-violet-400 rounded-xl border border-violet-500/15">
+                          <div className="p-2.5 bg-blue-50 text-blue-600 rounded-xl border border-blue-100">
                             <Navigation className="w-5 h-5 animate-pulse" />
                           </div>
                           <div>
-                            <p className="text-xs font-bold text-zinc-200">LANGKAH 3: Antarkan ke Alamat Penerima (Pelanggan)</p>
-                            <p className="text-[11px] text-zinc-400 mt-1">
+                            <p className="text-xs font-bold text-slate-800">LANGKAH 3: Antarkan ke Alamat Penerima (Pelanggan)</p>
+                            <p className="text-[11px] text-slate-500 mt-1 font-medium">
                               Silakan antarkan pakaian bersih yang sudah terbungkus rapi ke alamat rumah pelanggan.
                             </p>
-                            <div className="bg-zinc-900 border border-zinc-850 p-3 rounded-xl mt-2 text-[11px] text-zinc-400 space-y-1">
-                              <p className="font-semibold text-zinc-300">Alamat Penerima:</p>
+                            <div className="bg-white border border-slate-200 p-3 rounded-xl mt-2 text-[11px] text-slate-600 space-y-1 font-semibold">
+                              <p className="font-extrabold text-slate-800">Alamat Penerima:</p>
                               <p>{activeJob.deliveryAddress}</p>
-                              <p className="text-zinc-500 text-[10px] mt-1">Catatan: {activeJob.deliveryNotes || "Antarkan langsung ke pintu."}</p>
+                              <p className="text-slate-400 text-[10px] mt-1 font-bold">Catatan: {activeJob.deliveryNotes || "Antarkan langsung ke pintu."}</p>
                             </div>
                           </div>
                         </div>
@@ -598,7 +598,9 @@ export default function DriverPortal({
                               <p className="text-[10px] text-emerald-400 font-bold flex items-center justify-center gap-1">
                                 ✓ Foto Bukti Berhasil Diambil!
                               </p>
-                              <button
+                              <motion.button
+                                whileHover={{ scale: 1.03, y: -0.5 }}
+                                whileTap={{ scale: 0.97 }}
                                 onClick={() => {
                                   setIsCapturingDeliveryPhoto(true);
                                   setTimeout(() => {
@@ -606,10 +608,11 @@ export default function DriverPortal({
                                     setIsCapturingDeliveryPhoto(false);
                                   }, 700);
                                 }}
-                                className="px-3 py-1 bg-zinc-800 hover:bg-zinc-700 text-zinc-300 rounded-lg text-[10px] font-bold transition"
+                                className="px-3 py-1.5 bg-slate-900 hover:bg-slate-950 text-white border border-slate-800 rounded-lg text-[10px] font-bold flex items-center justify-center gap-1 cursor-pointer shadow-sm hover:shadow transition-all duration-150"
                               >
-                                Ambil Ulang Foto
-                              </button>
+                                <Camera className="w-3.5 h-3.5 text-slate-300" />
+                                <span>Ambil Ulang Foto</span>
+                              </motion.button>
                             </div>
                           ) : (
                             <div className="py-6 space-y-3 w-full">
@@ -674,108 +677,107 @@ export default function DriverPortal({
 
                   </div>
                 </div>
-              </div>
-            ) : (
-              /* Dispatch Matchboard pending jobs */
-              <div className="space-y-4">
+              ) : (
+                /* Dispatch Matchboard pending jobs */
+                <div className="space-y-4">
                 <div className="flex justify-between items-center mb-1">
-                  <h3 className="font-sans font-bold text-sm text-zinc-100 flex items-center gap-2">
-                    <Briefcase className="w-4 h-4 text-sky-400" />
-                    Available Dispatch Job Contracts
+                  <h3 className="font-sans font-extrabold text-sm text-slate-800 flex items-center gap-2">
+                    <Briefcase className="w-4 h-4 text-blue-600" />
+                    Kontrak Pengantaran Tersedia
                   </h3>
-                  <span className="text-[10px] bg-zinc-900 font-mono text-zinc-400 px-2 py-0.5 rounded border border-zinc-800">
+                  <span className="text-[10px] bg-blue-50 font-mono text-blue-700 px-2.5 py-1 rounded border border-blue-200 font-bold">
                     REAL-TIME MATCHING DIRECTORY
                   </span>
                 </div>
 
                 {/* Pickup Jobs Queue */}
                 <div className="space-y-3.5">
-                  <p className="text-[10px] font-mono tracking-wider text-zinc-500 uppercase">Awaiting Pickup Runs:</p>
+                  <p className="text-[10px] font-mono tracking-wider text-slate-400 uppercase font-bold">Menunggu Penjemputan (Pickup):</p>
                   {pendingJobs.map((job) => (
                     <div 
                       key={job.id} 
-                      className="bg-zinc-900 border border-zinc-800/80 rounded-2xl p-4 hover:border-zinc-700 transition flex flex-col sm:flex-row justify-between gap-4"
+                      className="bg-white border border-slate-200 rounded-2xl p-4 hover:border-slate-300 transition flex flex-col sm:flex-row justify-between gap-4 shadow-sm"
                     >
                       <div className="space-y-2">
                         <div className="flex items-center gap-2">
-                          <span className="text-xs font-mono font-bold text-zinc-200">Order #{job.orderNumber}</span>
-                          <span className="text-[9px] bg-sky-950/40 text-sky-300 border border-sky-900/30 px-1.5 py-0.2 rounded font-mono font-bold">
+                          <span className="text-xs font-mono font-bold text-slate-900">Order #{job.orderNumber}</span>
+                          <span className="text-[9px] bg-blue-50 text-blue-600 border border-blue-200 px-2 py-0.5 rounded-full font-mono font-bold">
                             {job.serviceType.toUpperCase()}
                           </span>
                         </div>
-                        <div className="space-y-1">
-                          <p className="text-xs text-zinc-400 flex items-center gap-1.5">
-                            <MapPin className="w-3.5 h-3.5 text-emerald-400 shrink-0" /> 
-                            <strong className="text-zinc-300 shrink-0">Pickup:</strong> {job.pickupAddress}
+                        <div className="space-y-1 font-semibold">
+                          <p className="text-xs text-slate-600 flex items-center gap-1.5">
+                            <MapPin className="w-3.5 h-3.5 text-blue-600 shrink-0" /> 
+                            <strong className="text-slate-800 shrink-0 font-bold">Pickup:</strong> {job.pickupAddress}
                           </p>
-                          <p className="text-xs text-zinc-400 flex items-center gap-1.5">
-                            <MapPin className="w-3.5 h-3.5 text-violet-400 shrink-0" /> 
-                            <strong className="text-zinc-300 shrink-0">Workshop:</strong> Jl. Senopati No. 45
+                          <p className="text-xs text-slate-600 flex items-center gap-1.5">
+                            <MapPin className="w-3.5 h-3.5 text-purple-600 shrink-0" /> 
+                            <strong className="text-slate-800 shrink-0 font-bold">Workshop:</strong> Jl. Senopati No. 45
                           </p>
                         </div>
-                        <p className="text-[10px] text-zinc-500 font-mono font-medium">Garments: {job.weightKg} Kg / {job.itemCount} Items</p>
+                        <p className="text-[10px] text-slate-400 font-mono font-bold">Muatan: {job.weightKg} Kg / {job.itemCount} Items</p>
                       </div>
 
                       <div className="text-right flex flex-row sm:flex-col justify-between sm:justify-center gap-2 items-center sm:items-end">
                         <div>
-                          <p className="text-[10px] text-zinc-500 font-mono uppercase">Contract payout</p>
-                          <p className="text-base font-mono font-extrabold text-emerald-400">${job.deliveryFee.toFixed(2)}</p>
+                          <p className="text-[10px] text-slate-400 font-mono uppercase font-bold">Komisi Kontrak</p>
+                          <p className="text-base font-mono font-extrabold text-blue-600">${job.deliveryFee.toFixed(2)}</p>
                         </div>
                         <button
                           onClick={() => handleAcceptJob(job.id, false)}
-                          className="px-4 py-2 bg-sky-600 hover:bg-sky-500 text-white rounded-xl text-xs font-extrabold transition shadow-lg shadow-sky-600/10"
+                          className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-xs font-extrabold transition shadow-sm cursor-pointer"
                         >
-                          Accept Pickup Run
+                          Terima Job Pickup
                         </button>
                       </div>
                     </div>
                   ))}
 
                   {/* Delivery Runs (Washing complete, waiting for delivery courier) */}
-                  <p className="text-[10px] font-mono tracking-wider text-zinc-500 uppercase mt-6">Awaiting Delivery Runs:</p>
+                  <p className="text-[10px] font-mono tracking-wider text-slate-400 uppercase mt-6 font-bold">Menunggu Pengantaran (Delivery):</p>
                   {deliveryJobs.map((job) => (
                     <div 
                       key={job.id} 
-                      className="bg-zinc-900 border border-zinc-800/80 rounded-2xl p-4 hover:border-zinc-700 transition flex flex-col sm:flex-row justify-between gap-4"
+                      className="bg-white border border-slate-200 rounded-2xl p-4 hover:border-slate-300 transition flex flex-col sm:flex-row justify-between gap-4 shadow-sm"
                     >
                       <div className="space-y-2">
                         <div className="flex items-center gap-2">
-                          <span className="text-xs font-mono font-bold text-zinc-200">Order #{job.orderNumber}</span>
-                          <span className="text-[9px] bg-emerald-950/40 text-emerald-300 border border-emerald-900/30 px-1.5 py-0.2 rounded font-mono font-bold">
+                          <span className="text-xs font-mono font-bold text-slate-900">Order #{job.orderNumber}</span>
+                          <span className="text-[9px] bg-emerald-50 text-emerald-600 border border-emerald-200 px-2 py-0.5 rounded-full font-mono font-bold">
                             DELIVERY RUN
                           </span>
                         </div>
-                        <div className="space-y-1">
-                          <p className="text-xs text-zinc-400 flex items-center gap-1.5">
-                            <MapPin className="w-3.5 h-3.5 text-violet-400 shrink-0" /> 
-                            <strong className="text-zinc-300 shrink-0">Workshop:</strong> Jl. Senopati No. 45
+                        <div className="space-y-1 font-semibold">
+                          <p className="text-xs text-slate-600 flex items-center gap-1.5">
+                            <MapPin className="w-3.5 h-3.5 text-purple-600 shrink-0" /> 
+                            <strong className="text-slate-800 shrink-0 font-bold">Workshop:</strong> Jl. Senopati No. 45
                           </p>
-                          <p className="text-xs text-zinc-400 flex items-center gap-1.5">
-                            <MapPin className="w-3.5 h-3.5 text-emerald-400 shrink-0" /> 
-                            <strong className="text-zinc-300 shrink-0">Delivery:</strong> {job.deliveryAddress}
+                          <p className="text-xs text-slate-600 flex items-center gap-1.5">
+                            <MapPin className="w-3.5 h-3.5 text-blue-600 shrink-0" /> 
+                            <strong className="text-slate-800 shrink-0 font-bold">Delivery:</strong> {job.deliveryAddress}
                           </p>
                         </div>
-                        <p className="text-[10px] text-zinc-500 font-mono font-medium">Garments packed and sealed. Handover ready.</p>
+                        <p className="text-[10px] text-slate-400 font-mono font-bold">Status: Cucian bersih, siap dikirim ke tujuan.</p>
                       </div>
 
                       <div className="text-right flex flex-row sm:flex-col justify-between sm:justify-center gap-2 items-center sm:items-end">
                         <div>
-                          <p className="text-[10px] text-zinc-500 font-mono uppercase">Contract payout</p>
-                          <p className="text-base font-mono font-extrabold text-emerald-400">${job.deliveryFee.toFixed(2)}</p>
+                          <p className="text-[10px] text-slate-400 font-mono uppercase font-bold">Komisi Kontrak</p>
+                          <p className="text-base font-mono font-extrabold text-blue-600">${job.deliveryFee.toFixed(2)}</p>
                         </div>
                         <button
                           onClick={() => handleAcceptJob(job.id, true)}
-                          className="px-4 py-2 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl text-xs font-extrabold transition shadow-lg shadow-emerald-600/10"
+                          className="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs font-extrabold transition shadow-sm cursor-pointer"
                         >
-                          Accept Delivery Run
+                          Terima Job Delivery
                         </button>
                       </div>
                     </div>
                   ))}
 
                   {pendingJobs.length === 0 && deliveryJobs.length === 0 && (
-                    <div className="p-8 border border-zinc-800 border-dashed rounded-2xl text-center text-zinc-500 text-xs">
-                      🛌 Currently no active pending dispatches in your proximity radius. Active customer orders are shown here immediately.
+                    <div className="p-8 border border-slate-200 border-dashed rounded-2xl text-center text-slate-400 text-xs font-semibold">
+                      🛌 Saat ini belum ada order penjemputan baru di sekitar Anda. Aktifkan status Anda untuk menerima order secara instan.
                     </div>
                   )}
                 </div>
@@ -783,11 +785,11 @@ export default function DriverPortal({
             )
           ) : (
             /* Offline screen state warning */
-            <div className="bg-zinc-900/40 border border-zinc-800 border-dashed rounded-2xl p-8 text-center text-zinc-500 text-xs h-64 flex flex-col items-center justify-center gap-2">
-              <Truck className="w-10 h-10 text-zinc-600 animate-bounce" />
-              <p className="font-bold text-zinc-400">Offline</p>
-              <p className="max-w-xs text-zinc-500 leading-relaxed">
-                Toggle your status to ONLINE to open the secure geofencing radius, connect with customer booking streams, and process delivery faires.
+            <div className="bg-slate-50 border border-slate-200 border-dashed rounded-2xl p-8 text-center text-slate-400 text-xs h-64 flex flex-col items-center justify-center gap-2">
+              <Truck className="w-10 h-10 text-slate-300 animate-bounce" />
+              <p className="font-extrabold text-slate-600">Status Anda sedang Offline</p>
+              <p className="max-w-xs text-slate-400 leading-relaxed font-semibold">
+                Nyalakan tombol status GPS untuk mengaktifkan pelacakan, mencocokkan rute kurir terdekat, dan mengambil komisi pengiriman.
               </p>
             </div>
           )}
@@ -795,23 +797,23 @@ export default function DriverPortal({
 
         {/* Right column: Driver trip logs */}
         <div className="lg:col-span-4">
-          <div className="bg-zinc-900 border border-zinc-800 rounded-2xl p-5 shadow-lg space-y-4">
-            <h3 className="font-sans font-bold text-sm text-zinc-200 border-b border-zinc-800/80 pb-3">
-              Trips Log & Escrow Ledger
+          <div className="bg-white border border-slate-200 rounded-2xl p-5 shadow-sm space-y-4">
+            <h3 className="font-sans font-extrabold text-sm text-slate-900 border-b border-slate-100 pb-3">
+              Riwayat Pengiriman & Ledger
             </h3>
 
             <div className="space-y-3.5 max-h-[350px] overflow-y-auto pr-1 text-xs">
               {myCompletedTrips.map((o) => (
-                <div key={o.id} className="p-3 bg-zinc-950 rounded-xl border border-zinc-850 flex justify-between items-center">
+                <div key={o.id} className="p-3 bg-slate-50 rounded-xl border border-slate-100 flex justify-between items-center font-semibold">
                   <div>
-                    <p className="font-mono font-bold text-zinc-200">LH-{o.orderNumber}</p>
-                    <p className="text-[10px] text-zinc-400 mt-0.5">Washing completed by partner</p>
-                    <p className="text-[9px] font-mono text-zinc-500 mt-1">
+                    <p className="font-mono font-bold text-slate-900">CleanUp-{o.orderNumber}</p>
+                    <p className="text-[10px] text-slate-500 mt-0.5 font-medium">Pengantaran Selesai & Terverifikasi Foto</p>
+                    <p className="text-[9px] font-mono text-slate-400 mt-1">
                       {new Date(o.completedAt || o.createdAt).toLocaleDateString()}
                     </p>
                   </div>
                   <div className="text-right">
-                    <span className="text-[10px] bg-emerald-950/40 text-emerald-400 border border-emerald-900/40 px-2 py-0.5 rounded font-mono font-bold">
+                    <span className="text-[10px] bg-emerald-50 text-emerald-600 border border-emerald-200 px-2 py-0.5 rounded-full font-mono font-bold">
                       +${o.deliveryFee.toFixed(2)}
                     </span>
                   </div>
@@ -819,7 +821,7 @@ export default function DriverPortal({
               ))}
 
               {myCompletedTrips.length === 0 && (
-                <div className="text-zinc-500 text-center py-4 italic">No trips completed during this active session.</div>
+                <div className="text-slate-400 text-center py-4 italic font-semibold">Belum ada komisi masuk dari trip hari ini.</div>
               )}
             </div>
           </div>

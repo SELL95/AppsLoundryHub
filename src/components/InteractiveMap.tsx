@@ -137,9 +137,9 @@ export default function InteractiveMap({
       });
     };
 
-    const customerIcon = createCustomIcon("#10b981", "🏠"); // Emerald for customer
-    const partnerIcon = createCustomIcon("#8b5cf6", "🧺"); // Violet for partners
-    const driverIcon = createCustomIcon("#0284c7", "🚚"); // Sky blue for drivers
+    const customerIcon = createCustomIcon("#2563eb", "🏠"); // Blue for customer
+    const partnerIcon = createCustomIcon("#4f46e5", "🧺"); // Purple/Indigo for partners
+    const driverIcon = createCustomIcon("#eab308", "🚚"); // Yellow for active driver courier
 
     // Clear previous markers
     if (customerMarkerRef.current) {
@@ -165,7 +165,7 @@ export default function InteractiveMap({
       }).addTo(map);
 
       // Bind simple popup
-      customerMarker.bindPopup(`<strong class="text-zinc-900 font-sans">📍 Lokasi Anda</strong><br/><span class="text-xs text-zinc-500">Gunakan marker ini atau geser untuk mengganti lokasi penjemputan.</span>`).openPopup();
+      customerMarker.bindPopup(`<strong class="text-slate-900 font-sans">📍 Lokasi Penjemputan Anda</strong><br/><span class="text-xs text-slate-500">Geser ikon pin ini ke jalan masuk rumah Anda agar kurir mudah menjangkau lokasi.</span>`).openPopup();
 
       customerMarker.on("dragend", () => {
         const position = customerMarker.getLatLng();
@@ -187,12 +187,12 @@ export default function InteractiveMap({
         const popupContent = document.createElement("div");
         popupContent.className = "p-1.5 font-sans min-w-[180px]";
         popupContent.innerHTML = `
-          <strong class="text-zinc-900 text-sm block">${partner.businessName}</strong>
-          <span class="text-xs text-zinc-500 block mt-0.5 mb-1.5">${partner.businessAddress}</span>
-          <div class="flex items-center justify-between mt-2 pt-1.5 border-t border-zinc-100">
-            <span class="text-xs font-bold text-amber-500">★ ${partner.ratingAvg.toFixed(1)}</span>
-            <button id="select-partner-${partner.id}" class="px-2 py-1 bg-indigo-600 hover:bg-indigo-500 text-white rounded text-[10px] font-bold cursor-pointer transition">
-              ${isSelected ? "✓ Dipilih" : "Pilih Mitra"}
+          <strong class="text-slate-900 text-sm block font-extrabold">${partner.businessName}</strong>
+          <span class="text-xs text-slate-500 block mt-0.5 mb-1.5 font-medium">${partner.businessAddress}</span>
+          <div class="flex items-center justify-between mt-2 pt-1.5 border-t border-slate-100">
+            <span class="text-xs font-bold text-yellow-600">★ ${partner.ratingAvg.toFixed(1)}</span>
+            <button id="select-partner-${partner.id}" class="px-2.5 py-1 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-[10px] font-bold cursor-pointer transition">
+              ${isSelected ? "✓ Terpilih" : "Pilih Mitra"}
             </button>
           </div>
         `;
@@ -221,11 +221,11 @@ export default function InteractiveMap({
       const targetLat = trackingOrder.pickupLat;
       const targetLng = trackingOrder.pickupLng;
 
-      // Render Customer Marker (Emerald)
+      // Render Customer Marker (Blue)
       const customerMarker = L.marker([targetLat, targetLng], {
         icon: customerIcon,
       }).addTo(map);
-      customerMarker.bindPopup(`<strong class="text-zinc-900">🏠 Rumah Anda</strong>`);
+      customerMarker.bindPopup(`<strong class="text-slate-900 font-extrabold">🏠 Rumah Anda</strong>`);
       customerMarkerRef.current = customerMarker;
 
       // Find the laundry partner
@@ -233,11 +233,11 @@ export default function InteractiveMap({
       const partnerLat = matchedPartner?.businessLat || targetLat + 0.01;
       const partnerLng = matchedPartner?.businessLng || targetLng + 0.01;
 
-      // Render Laundry Partner Workshop (Violet)
+      // Render Laundry Partner Workshop (Indigo/Purple)
       const partnerMarker = L.marker([partnerLat, partnerLng], {
         icon: partnerIcon,
       }).addTo(map);
-      partnerMarker.bindPopup(`<strong class="text-zinc-900">🧺 Workshop: ${matchedPartner?.businessName || "Mitra Laundry"}</strong>`);
+      partnerMarker.bindPopup(`<strong class="text-slate-900 font-extrabold">🧺 Workshop: ${matchedPartner?.businessName || "Mitra Laundry"}</strong>`);
       partnerMarkersRef.current.push(partnerMarker);
 
       // Render active Courier Driver
@@ -251,8 +251,8 @@ export default function InteractiveMap({
         
         driverMarker.bindPopup(`
           <div class="font-sans">
-            <strong class="text-zinc-900 block text-xs">🚚 Kurir Sedang Bergerak</strong>
-            <span class="text-[10px] text-sky-600 font-mono block">Status: ${trackingOrder.status.replace(/_/g, " ")}</span>
+            <strong class="text-slate-900 block text-xs font-extrabold">🚚 Kurir CleanUp Sedang Berjalan</strong>
+            <span class="text-[10px] text-blue-600 font-mono block font-bold mt-0.5">Status: ${trackingOrder.status.replace(/_/g, " ")}</span>
           </div>
         `).openPopup();
         
@@ -266,7 +266,7 @@ export default function InteractiveMap({
         ];
 
         const polyline = L.polyline(lineCoords, {
-          color: "#0ea5e9",
+          color: "#2563eb",
           weight: 3,
           dashArray: "6, 6",
           opacity: 0.8,
@@ -284,7 +284,7 @@ export default function InteractiveMap({
       } else {
         // No driver matched yet, just connect customer and partner
         const polyline = L.polyline([[targetLat, targetLng], [partnerLat, partnerLng]], {
-          color: "#8b5cf6",
+          color: "#4f46e5",
           weight: 3,
           dashArray: "6, 6",
           opacity: 0.7,
@@ -301,53 +301,52 @@ export default function InteractiveMap({
 
   if (loadError) {
     return (
-      <div className="w-full h-full min-h-[250px] flex flex-col items-center justify-center bg-zinc-950 text-center p-6 border border-zinc-850 rounded-2xl">
-        <p className="text-rose-400 font-bold text-sm">{loadError}</p>
-        <p className="text-zinc-500 text-xs mt-2">Pastikan Anda memiliki koneksi internet aktif untuk memuat peta satelit.</p>
+      <div className="w-full h-full min-h-[250px] flex flex-col items-center justify-center bg-white text-center p-6 border border-slate-200 rounded-2xl shadow-sm">
+        <p className="text-red-500 font-extrabold text-sm">{loadError}</p>
+        <p className="text-slate-400 text-xs mt-2 font-medium">Pastikan Anda memiliki koneksi internet aktif untuk memuat peta satelit.</p>
       </div>
     );
   }
 
   if (!leafletLoaded) {
     return (
-      <div className="w-full h-full min-h-[250px] flex flex-col items-center justify-center bg-zinc-950 text-center gap-3 border border-zinc-850 rounded-2xl">
-        <div className="w-8 h-8 border-4 border-indigo-600 border-t-transparent rounded-full animate-spin"></div>
-        <p className="text-zinc-400 text-xs font-medium">Memuat Peta Satelit Interaktif...</p>
+      <div className="w-full h-full min-h-[250px] flex flex-col items-center justify-center bg-white text-center gap-3 border border-slate-200 rounded-2xl shadow-sm">
+        <div className="w-8 h-8 border-4 border-blue-600 border-t-transparent rounded-full animate-spin"></div>
+        <p className="text-slate-500 text-xs font-bold">Memuat Peta Satelit Interaktif...</p>
       </div>
     );
   }
 
   return (
-    <div className="relative w-full h-full min-h-[250px] rounded-2xl overflow-hidden border border-zinc-850">
-      {/* Dynamic inline styles to apply cyber-dark mode maps */}
+    <div className="relative w-full h-full min-h-[250px] rounded-2xl overflow-hidden border border-slate-200 shadow-sm">
+      {/* Dynamic inline styles to apply clean mode maps */}
       <style>{`
-        .custom-dark-leaflet .leaflet-tile-container img {
-          filter: invert(1) hue-rotate(180deg) brightness(0.85) contrast(1.1) !important;
-        }
-        .custom-dark-leaflet .leaflet-container {
-          background-color: #09090b !important;
+        .leaflet-container {
+          background-color: #f8fafc !important;
         }
         .leaflet-popup-content-wrapper {
           background-color: #ffffff !important;
-          color: #09090b !important;
+          color: #0f172a !important;
           border-radius: 12px !important;
           padding: 4px !important;
-          box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.4) !important;
+          box-shadow: 0 4px 12px rgba(15, 23, 42, 0.08) !important;
+          border: 1px solid #e2e8f0 !important;
         }
         .leaflet-popup-tip {
           background-color: #ffffff !important;
+          border: 1px solid #e2e8f0 !important;
         }
       `}</style>
 
       <div 
         ref={mapContainerRef} 
-        className="w-full h-full min-h-[250px] custom-dark-leaflet z-10" 
+        className="w-full h-full min-h-[250px] z-10" 
       />
 
       {/* Subtle overlay instructions */}
-      <div className="absolute top-2.5 right-2.5 z-[1000] bg-zinc-950/80 backdrop-blur-md border border-zinc-800/80 px-2.5 py-1.5 rounded-lg text-[9px] text-zinc-400 pointer-events-none flex items-center gap-1.5">
-        <Navigation className="w-3 h-3 text-emerald-400" />
-        <span>Peta Satelit Real-Time aktif</span>
+      <div className="absolute top-2.5 right-2.5 z-[1000] bg-white/90 backdrop-blur-md border border-slate-200/80 px-2.5 py-1.5 rounded-lg text-[9px] text-slate-500 font-bold pointer-events-none flex items-center gap-1.5 shadow-sm">
+        <Navigation className="w-3 h-3 text-blue-600 animate-pulse" />
+        <span>GPS Satelit Terhubung</span>
       </div>
     </div>
   );
